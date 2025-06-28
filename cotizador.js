@@ -1,118 +1,107 @@
-// Variables de usuario
-let usuarioActual = JSON.parse(localStorage.getItem("dellorto-user"));
-let factorUsuario = usuarioActual?.factor || 1;
+let preciosBase = {};
+let factorCliente = 1;
+let productosCotizados = [];
 
-// Cotizaciones guardadas
-let cotizacionActual = {
-  cliente: usuarioActual?.usuario || "cliente",
-  items: [],
-  servicios: [],
-  totalNeto: 0,
-  iva: 0,
-  totalFinal: 0,
-  fecha: new Date().toLocaleDateString(),
-  folio: Date.now()
+// Inicializa la página
+window.onload = async () => {
+  cargarUsuarioActivo();
+  preciosBase = await fetchPrecios();
+  factorCliente = cargarFactorCliente();
+  document.getElementById("fechaCotizacion").valueAsDate = new Date();
 };
 
-// DOM Ready
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("formCotizacion");
-  if (!form) return;
+function cargarUsuarioActivo() {
+  const user = localStorage.getItem("usuario");
+  document.getElementById("username").innerText = user || "Desconocido";
+}
 
-  // Escucha envío
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form));
+function cargarFactorCliente() {
+  const factor = localStorage.getItem("factor");
+  return factor ? parseFloat(factor) : 1;
+}
 
-    const alto = parseFloat(data.alto);
-    const ancho = parseFloat(data.ancho);
-    const cantidad = parseInt(data.cantidad);
-    const elemento = data.elemento;
+async function fetchPrecios() {
+  const res = await fetch("precios_base.json");
+  return await res.json();
+}
 
-    const m2 = calcularM2(ancho, alto);
-    const ml = calcularML(ancho, alto);
-    const espesor = parseFloat(data.espesor);
-    const peso = elemento === "Vidrio"
-      ? calcularPesoVidrio(m2, espesor)
-      : calcularPesoTermopanel(m2, data);
-
-    const precioUnidad = obtenerPrecioBase(data) * factorUsuario;
-    const totalLinea = precioUnidad * m2 * cantidad;
-
-    cotizacionActual.items.push({
-      nombre: data.nombre,
-      cantidad,
-      elemento,
-      tipo: data.tipo || "Termopanel",
-      m2,
-      ml,
-      peso,
-      precioUnidad,
-      total: totalLinea
-    });
-
-    renderResumen();
-    form.reset();
-  });
-});
-
-// 🔄 Mostrar resumen
-function renderResumen() {
-  const resumenDiv = document.getElementById("tablaResumen");
-  if (!resumenDiv) return;
-
-  let html = `
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th><th>Tipo</th><th>Cantidad</th><th>m²</th><th>mL</th>
-          <th>Peso (kg)</th><th>Unitario</th><th>Total</th>
-        </tr>
-      </thead><tbody>
+function agregarProducto() {
+  const id = productosCotizados.length;
+  const container = document.createElement("div");
+  container.className = "producto";
+  container.innerHTML = `
+    <h3>Producto ${id + 1}</h3>
+    <input type="text" placeholder="Nombre" id="nombre-${id}" />
+    <input type="number" placeholder="Cantidad" id="cantidad-${id}" min="1" />
+    <select id="tipo-${id}" onchange="actualizarOpciones(${id})">
+      <option value="Vidrio">Vidrio</option>
+      <option value="Termopanel">Termopanel</option>
+    </select>
+    <div id="opciones-${id}"></div>
   `;
-
-  let total = 0;
-  cotizacionActual.items.forEach(item => {
-    html += `<tr>
-      <td>${item.nombre}</td><td>${item.tipo}</td><td>${item.cantidad}</td>
-      <td>${item.m2.toFixed(2)}</td><td>${item.ml.toFixed(2)}</td>
-      <td>${item.peso.toFixed(1)}</td>
-      <td>$ ${formatNumber(item.precioUnidad)}</td>
-      <td>$ ${formatNumber(item.total)}</td>
-    </tr>`;
-    total += item.total;
-  });
-
-  const iva = total * 0.19;
-  const totalFinal = total + iva;
-
-  html += `</tbody></table><br>
-    <div><strong>Total Neto:</strong> $ ${formatNumber(total)}</div>
-    <div><strong>IVA (19%):</strong> $ ${formatNumber(iva)}</div>
-    <div><strong>Total Final:</strong> $ ${formatNumber(totalFinal)}</div>
-  `;
-
-  resumenDiv.innerHTML = html;
-
-  // Actualizar totales
-  cotizacionActual.totalNeto = total;
-  cotizacionActual.iva = iva;
-  cotizacionActual.totalFinal = totalFinal;
+  document.getElementById("productos").appendChild(container);
+  productosCotizados.push({ id });
+  actualizarOpciones(id);
 }
 
-// Placeholder – Debe reemplazarse por precios reales
-function obtenerPrecioBase(data) {
-  // Aquí deberás vincular los precios reales desde el Excel cargado
-  const base = 10000; // temporal
-  return base;
+function actualizarOpciones(id) {
+  const tipo = document.getElementById(`tipo-${id}`).value;
+  const contenedor = document.getElementById(`opciones-${id}`);
+  contenedor.innerHTML = "";
+
+  if (tipo === "Vidrio") {
+    contenedor.innerHTML = `
+      <select id="vidrioTipo-${id}">${generarOpcionesVidrios()}</select>
+      <select id="espesor-${id}"></select>
+      <input type="number" placeholder="Alto (mm)" id="alto-${id}" />
+      <input type="number" placeholder="Ancho (mm)" id="ancho-${id}" />
+    `;
+    document.getElementById(`vidrioTipo-${id}`).addEventListener("change", () => cargarEspesores(id));
+    cargarEspesores(id);
+  } else {
+    contenedor.innerHTML = `
+      <h4>Vidrio A</h4>
+      <select id="vidrioA-${id}">${generarOpcionesVidrios()}</select>
+      <select id="espesorA-${id}"></select>
+      <h4>Vidrio B</h4>
+      <select id="vidrioB-${id}">${generarOpcionesVidrios()}</select>
+      <select id="espesorB-${id}"></select>
+      <label>Separador:</label>
+      <select id="separador-${id}">
+        <option value="Separador polisulfuro">Aluminio (sep.PSF)</option>
+        <option value="Separador silicona">Silicona (sep.SEN)</option>
+      </select>
+      <select id="espesorSep-${id}">
+        <option>6</option><option>8</option><option>10</option><option>12</option>
+        <option>15</option><option>19</option><option>20</option>
+      </select>
+      <select id="colorSep-${id}">
+        <option>Negro</option><option>Plata Mate</option><option>Bronce</option>
+      </select>
+      <input type="number" placeholder="Alto (mm)" id="alto-${id}" />
+      <input type="number" placeholder="Ancho (mm)" id="ancho-${id}" />
+    `;
+    document.getElementById(`vidrioA-${id}`).addEventListener("change", () => cargarEspesores(id, "A"));
+    document.getElementById(`vidrioB-${id}`).addEventListener("change", () => cargarEspesores(id, "B"));
+    cargarEspesores(id, "A");
+    cargarEspesores(id, "B");
+  }
 }
 
-function guardarCotizacion() {
-  const key = `cotizacion-${cotizacionActual.folio}`;
-  localStorage.setItem(key, JSON.stringify(cotizacionActual));
-  alert("Cotización guardada localmente.");
+function generarOpcionesVidrios() {
+  const tiposUnicos = [...new Set(preciosBase.vidrios.map(v => v.nombre))];
+  return tiposUnicos.map(v => `<option value="${v}">${v}</option>`).join("");
 }
 
-function exportarPDF() {
-  window.print();
+function cargarEspesores(id, parte = "") {
+  const selectId = parte ? `vidrio${parte}-${id}` : `vidrioTipo-${id}`;
+  const tipo = document.getElementById(selectId).value;
+  const espesores = preciosBase.vidrios
+    .filter(v => v.nombre === tipo)
+    .map(v => v.espesor);
+  const target = document.getElementById(`espesor${parte}-${id}`);
+  target.innerHTML = espesores.map(e => `<option>${e}</option>`).join("");
 }
+
+// [Funciones de cálculo, resumen, IVA, peso y PDF se agregan en los siguientes módulos]
+
