@@ -1,0 +1,546 @@
+{
+  "vidrios": [
+    {
+      "nombre": "Incoloro",
+      "espesor": 4.0,
+      "valor": 8165.384615384615
+    },
+    {
+      "nombre": "Incoloro",
+      "espesor": 5.0,
+      "valor": 9530.76923076923
+    },
+    {
+      "nombre": "Incoloro",
+      "espesor": 6.0,
+      "valor": 11221.153846153846
+    },
+    {
+      "nombre": "Incoloro",
+      "espesor": 8.0,
+      "valor": 14867.307692307691
+    },
+    {
+      "nombre": "Incoloro",
+      "espesor": 10.0,
+      "valor": 17934.615384615383
+    },
+    {
+      "nombre": "Incoloro",
+      "espesor": 12.0,
+      "valor": 24480.76923076923
+    },
+    {
+      "nombre": "Mateluz",
+      "espesor": 4.0,
+      "valor": 16623.076923076922
+    },
+    {
+      "nombre": "Mateluz",
+      "espesor": 5.0,
+      "valor": 24769.23076923077
+    },
+    {
+      "nombre": "Mateluz",
+      "espesor": 6.0,
+      "valor": 27596.923076923074
+    },
+    {
+      "nombre": "Templado",
+      "espesor": 4.0,
+      "valor": 15930
+    },
+    {
+      "nombre": "Templado",
+      "espesor": 5.0,
+      "valor": 18845
+    },
+    {
+      "nombre": "Templado",
+      "espesor": 6.0,
+      "valor": 22372.5
+    },
+    {
+      "nombre": "Templado",
+      "espesor": 8.0,
+      "valor": 29810
+    },
+    {
+      "nombre": "Templado",
+      "espesor": 10.0,
+      "valor": 36607.5
+    },
+    {
+      "nombre": "Templado",
+      "espesor": 12.0,
+      "valor": 50400
+    },
+    {
+      "nombre": "Laminado_templado",
+      "espesor": 8.0,
+      "valor": 47860
+    },
+    {
+      "nombre": "Laminado_templado",
+      "espesor": 10.0,
+      "valor": 53690
+    },
+    {
+      "nombre": "Laminado_templado",
+      "espesor": 13.52,
+      "valor": 64746
+    },
+    {
+      "nombre": "Laminado_templado",
+      "espesor": 17.52,
+      "valor": 79620
+    },
+    {
+      "nombre": "Laminado_templado",
+      "espesor": 21.52,
+      "valor": 93216
+    },
+    {
+      "nombre": "LowE Eco",
+      "espesor": 4.0,
+      "valor": "A PEDIDO"
+    },
+    {
+      "nombre": "LowE Eco",
+      "espesor": 5.0,
+      "valor": "A PEDIDO"
+    },
+    {
+      "nombre": "LowE Eco",
+      "espesor": 6.0,
+      "valor": "A PEDIDO"
+    },
+    {
+      "nombre": "Low E Plus",
+      "espesor": 4.0,
+      "valor": 25351.615384615383
+    },
+    {
+      "nombre": "Low E Plus",
+      "espesor": 5.0,
+      "valor": 30366.23076923077
+    },
+    {
+      "nombre": "Low E Plus",
+      "espesor": 6.0,
+      "valor": 34049.846153846156
+    },
+    {
+      "nombre": "Laminado_33_1",
+      "espesor": 6.0,
+      "valor": 21170.212765957447
+    },
+    {
+      "nombre": "Laminado_44_1",
+      "espesor": 8.0,
+      "valor": 26888.88888888889
+    },
+    {
+      "nombre": "Laminado_55_1",
+      "espesor": 10.0,
+      "valor": 33333.333333333336
+    },
+    {
+      "nombre": "Laminado_66_1",
+      "espesor": 12.0,
+      "valor": 59777.77777777778
+    },
+    {
+      "nombre": "Laminado_33_2",
+      "espesor": 6.0,
+      "valor": "A PEDIDO"
+    },
+    {
+      "nombre": "Laminado_44_2",
+      "espesor": 8.0,
+      "valor": "A PEDIDO"
+    },
+    {
+      "nombre": "Laminado_55_2",
+      "espesor": 10.0,
+      "valor": "A PEDIDO"
+    },
+    {
+      "nombre": "Laminado_66_2",
+      "espesor": 12.0,
+      "valor": "A PEDIDO"
+    },
+    {
+      "nombre": "Pulido opaco",
+      "espesor": 4.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco",
+      "espesor": 5.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco",
+      "espesor": 6.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco",
+      "espesor": 8.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco",
+      "espesor": 10.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco",
+      "espesor": 12.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco laminado_33_1",
+      "espesor": 6.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco laminado_44_1",
+      "espesor": 8.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco laminado_55_1",
+      "espesor": 10.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido opaco laminado_66_1",
+      "espesor": 12.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 4.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 5.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 6.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 8.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 10.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 12.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 15.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 16.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 17.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 18.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante",
+      "espesor": 19.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante laminado_33_1",
+      "espesor": 6.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante laminado_44_1",
+      "espesor": 8.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante laminado_55_1",
+      "espesor": 10.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Pulido brillante laminado_66_1",
+      "espesor": 12.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Botado arista",
+      "espesor": 4.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Botado arista",
+      "espesor": 5.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Botado arista",
+      "espesor": 6.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Botado arista",
+      "espesor": 8.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Botado arista",
+      "espesor": 10.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Botado arista x tp",
+      "espesor": 4.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Botado arista x tp",
+      "espesor": 5.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Botado arista x tp",
+      "espesor": 6.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 4.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 5.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 6.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 8.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 10.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 12.0,
+      "valor": 0
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 15.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 16.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 17.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 18.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Perforado normal",
+      "espesor": 19.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Perforado avellanado",
+      "espesor": 4.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Perforado avellanado",
+      "espesor": 5.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Perforado avellanado",
+      "espesor": 6.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Perforado avellanado",
+      "espesor": 8.0,
+      "valor": 500
+    },
+    {
+      "nombre": "Perforado avellanado",
+      "espesor": 10.0,
+      "valor": 500
+    },
+    {
+      "nombre": "Perforado avellanado",
+      "espesor": 12.0,
+      "valor": 500
+    },
+    {
+      "nombre": "Destajado normal",
+      "espesor": 4.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Destajado normal",
+      "espesor": 5.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado normal",
+      "espesor": 6.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado normal",
+      "espesor": 8.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado normal",
+      "espesor": 10.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado normal",
+      "espesor": 12.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado central",
+      "espesor": 4.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado central",
+      "espesor": 5.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado central",
+      "espesor": 6.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado central",
+      "espesor": 8.0,
+      "valor": 1000
+    },
+    {
+      "nombre": "Destajado central",
+      "espesor": 10.0,
+      "valor": 12000
+    },
+    {
+      "nombre": "Destajado central",
+      "espesor": 12.0,
+      "valor": 12000
+    }
+  ],
+  "separadores": [
+    {
+      "nombre": "Separador polisulfuro",
+      "espesor": 6.0,
+      "valor": 2181.8181818181815
+    },
+    {
+      "nombre": "Separador polisulfuro",
+      "espesor": 8.0,
+      "valor": 2181.8181818181815
+    },
+    {
+      "nombre": "Separador polisulfuro",
+      "espesor": 10.0,
+      "valor": 2181.8181818181815
+    },
+    {
+      "nombre": "Separador polisulfuro",
+      "espesor": 12.0,
+      "valor": 2181.8181818181815
+    },
+    {
+      "nombre": "Separador polisulfuro",
+      "espesor": 13.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Separador polisulfuro",
+      "espesor": 15.0,
+      "valor": 2250
+    },
+    {
+      "nombre": "Separador silicona estructural negra",
+      "espesor": 6.0,
+      "valor": 2545.454545454545
+    },
+    {
+      "nombre": "Separador silicona estructural negra",
+      "espesor": 8.0,
+      "valor": 2545.454545454545
+    },
+    {
+      "nombre": "Separador silicona estructural negra",
+      "espesor": 10.0,
+      "valor": 2545.454545454545
+    },
+    {
+      "nombre": "Separador silicona estructural negra",
+      "espesor": 12.0,
+      "valor": 2545.454545454545
+    },
+    {
+      "nombre": "Separador silicona estructural negra",
+      "espesor": 13.0,
+      "valor": "n/d"
+    },
+    {
+      "nombre": "Separador silicona estructural negra",
+      "espesor": 15.0,
+      "valor": 3636.363636363636
+    }
+  ]
+}
