@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Ingreso - Cotizador Dellorto</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ingreso al Cotizador</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="login-container">
-    <h2>Ingreso Cliente</h2>
+    <h1>Cotizador GPT</h1>
     <form id="loginForm">
-      <input type="text" placeholder="Usuario" id="username" required>
-      <input type="password" placeholder="Contraseña" id="password" required>
-      <button type="submit">Entrar</button>
+      <input type="text" id="username" placeholder="Usuario" required />
+      <input type="password" id="password" placeholder="Contraseña" required />
+      <button type="submit">Ingresar</button>
     </form>
-    <div id="loginError" class="error-msg"></div>
+    <p id="loginError" class="error-msg"></p>
   </div>
-  <script src="scripts/auth.js"></script>
+
+  <script src="auth.js"></script>
 </body>
 </html>
