@@ -1,73 +1,50 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cotizador PROTAM</title>
+  <title>Cotizador GPT</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <h1>Cotizador de Vidrios y Termopaneles</h1>
+    <h1>Cotizador GPT</h1>
     <div class="user-info">
-      Usuario: <span id="username"></span>
+      Usuario: <span id="username">--</span>
       <button onclick="logout()">Cerrar sesión</button>
     </div>
   </header>
 
-  <main>
-    <section class="datos-encabezado">
-      <input type="text" id="nombreEmpresa" placeholder="Nombre Empresa" />
-      <input type="text" id="obra" placeholder="Obra" />
-      <input type="text" id="direccion" placeholder="Dirección" />
-      <input type="text" id="folio" placeholder="Folio" />
-      <input type="text" id="supervisor" placeholder="Supervisor" />
-      <input type="number" id="version" placeholder="Versión" readonly />
-      <input type="date" id="fechaCotizacion" enabled />
-    </section>
+  <section>
+    <h2>Datos Generales</h2>
+    <label>Nombre Empresa: <input type="text" /></label>
+    <label>Obra: <input type="text" /></label>
+    <label>Dirección: <input type="text" /></label>
+    <label>Presupuesto: <input type="text" /></label>
+    <label>Supervisor: <input type="text" /></label>
+    <label>Versión: <input type="text" readonly value="1.0" /></label>
+    <label>Fecha de Cotización: <input type="date" id="fechaCotizacion" readonly /></label>
+  </section>
 
-    <section id="productos-container">
-      <h2>Agregar Producto</h2>
+  <section>
+    <h2>Productos</h2>
+    <div id="productos"></div>
+    <div style="margin-top: 10px;">
       <button onclick="agregarProducto()">+ Añadir Ítem</button>
-      <div id="productos"></div>
-    </section>
+      <button id="btnDuplicar">+ Añadir similar</button>
+      <button id="btnEliminar">Borrar Selección</button>
+    </div>
+  </section>
 
-    <section class="otros-servicios">
-      <h3>Otros servicios</h3>
-      <label><input type="checkbox" id="servicioInstalacion" /> Instalación</label>
-      <label><input type="checkbox" id="servicioTransporte" /> Transporte</label>
-    </section>
+  <section>
+    <h2>Resumen</h2>
+    <div id="resumenCotizacion">
+      <!-- Aquí se mostrará el resumen final -->
+    </div>
+    <button onclick="generarPDF()">Descargar PDF</button>
+  </section>
 
-    <section class="entrega">
-      <label for="entrega">Entrega en:</label>
-      <select id="entrega">
-        <option value="Fabrica">Fábrica</option>
-        <option value="Obra">Obra</option>
-      </select>
-    </section>
-
-    <section id="resumen">
-      <h2>Resumen de Cotización</h2>
-      <div id="tablaResumen">
-        <!-- Aquí se inyectará el resumen generado -->
-      </div>
-    </section>
-
-    <section class="acciones">
-      <button onclick="guardarCotizacion()">Guardar</button>
-      <button onclick="exportarPDF()">Exportar a PDF</button>
-    </section>
-  </main>
-
-  <!-- Librería PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-  <!-- Scripts del sistema -->
-  <script src="auth.js"></script>
-  <script src="dataLoader.js"></script>
   <script src="cotizador.js"></script>
-  <script src="storage.js"></script>
-  <script src="pdfExporter.js"></script>
   <script src="utils.js"></script>
 </body>
 </html>
