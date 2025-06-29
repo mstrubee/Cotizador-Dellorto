@@ -11,6 +11,7 @@ const espesoresPorVidrio = {
   "Incoloro": [4, 5, 6, 8, 10, 12],
   "Mateluz": [4, 5, 6],
   "Templado": [4, 5, 6, 8, 10, 12],
+  "Laminado_templado": [8, 10, 13.52, 17.52, 21.52],
   "Laminado_33_1": [6],
   "Laminado_44_1": [8],
   "Laminado_55_1": [10],
@@ -19,7 +20,6 @@ const espesoresPorVidrio = {
   "Laminado_44_2": [8],
   "Laminado_55_2": [10],
   "Laminado_66_2": [12],
-  "Laminado_templado": [8, 10, 13.52, 17.52, 21.52],
   "LowE Eco": [4, 5, 6],
   "LowE Plus": [4, 5, 6]
 };
