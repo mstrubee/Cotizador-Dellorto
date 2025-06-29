@@ -1,109 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Cotizador Dellorto</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-
-  <!-- SheetJS para lectura de Excel -->
-  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cotizador GPT</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <nav>
-    <div class="logo">Dellorto</div>
-    <ul>
-      <li><a href="#" id="navCotizar">Cotizar</a></li>
-      <li><a href="#" id="navCotizaciones">Mis Cotizaciones</a></li>
-      <li><a href="#" id="navAdmin">Admin</a></li>
-    </ul>
-  </nav>
+  <header>
+    <h1>Cotizador de Vidrios y Termopaneles</h1>
+    <div class="user-info">
+      Usuario: <span id="username"></span>
+      <button onclick="logout()">Cerrar sesión</button>
+    </div>
+  </header>
 
-  <main id="mainContent">
-    <!-- Cotización -->
-    <section id="cotizacionForm" class="tab">
-      <h2>Crear Nueva Cotización</h2>
-      <form id="formCotizacion">
-        <div class="form-row">
-          <label>Nombre:</label>
-          <input type="text" name="nombre" required>
-
-          <label>Elemento:</label>
-          <select name="elemento" required>
-            <option value="Vidrio">Vidrio</option>
-            <option value="Termopanel">Termopanel</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <label>Cantidad:</label>
-          <input type="number" name="cantidad" value="1" min="1" required>
-
-          <label>Ancho (mm):</label>
-          <input type="number" name="ancho" required>
-
-          <label>Alto (mm):</label>
-          <input type="number" name="alto" required>
-        </div>
-
-        <div id="opcionesVidrio" class="subform">
-          <!-- Contenido generado dinámicamente -->
-        </div>
-
-        <div id="opcionesTermopanel" class="subform" style="display: none;">
-          <!-- Contenido generado dinámicamente -->
-        </div>
-
-        <div id="serviciosExtras">
-          <h3>Servicios adicionales</h3>
-          <label><input type="checkbox" name="servicio[]" value="Instalación"> Instalación</label>
-          <label><input type="checkbox" name="servicio[]" value="Transporte"> Transporte</label>
-        </div>
-
-        <button type="submit">Agregar a Cotización</button>
-      </form>
+  <main>
+    <section class="datos-encabezado">
+      <input type="text" id="nombreEmpresa" placeholder="Nombre Empresa" />
+      <input type="text" id="obra" placeholder="Obra" />
+      <input type="text" id="direccion" placeholder="Dirección" />
+      <input type="text" id="folio" placeholder="Folio" />
+      <input type="text" id="supervisor" placeholder="Supervisor" />
+      <input type="number" id="version" placeholder="Versión" readonly />
+      <input type="date" id="fechaCotizacion" disabled />
     </section>
 
-    <!-- Resumen -->
-    <section id="resumenCotizacion" class="tab">
-      <h2>Resumen de Cotización</h2>
-      <div id="tablaResumen"></div>
-      <button onclick="guardarCotizacion()">Guardar</button>
-      <button onclick="exportarPDF()">Descargar PDF</button>
+    <section id="productos-container">
+      <h2>Agregar Producto</h2>
+      <button onclick="agregarProducto()">+ Añadir Ítem</button>
+      <div id="productos"></div>
     </section>
 
-    <!-- Admin -->
-    <section id="adminCarga" class="tab" style="display:none;">
-      <h2>Zona Administrador</h2>
-      <input type="password" id="adminClave" placeholder="Clave de acceso">
-      <button onclick="validarAdmin()">Acceder</button>
-
-      <div id="adminPanel" style="display: none;">
-        <h3>Cargar archivo de precios (.xlsx)</h3>
-        <input type="file" id="archivoExcel" accept=".xlsx">
-        <button onclick="cargarNuevoListado()">Cargar precios</button>
-        <p id="adminStatus"></p>
-
-        <hr>
-        <h3>Crear nuevo usuario</h3>
-        <form id="formNuevoUsuario">
-          <div class="form-row">
-            <input type="text" placeholder="Usuario" name="nuevoUsuario" required>
-            <input type="password" placeholder="Contraseña" name="nuevaClave" required>
-            <input type="number" step="0.01" min="0.01" placeholder="Factor de precio" name="nuevoFactor" required>
-            <button type="submit">Agregar Usuario</button>
-          </div>
-        </form>
-        <div id="estadoNuevoUsuario"></div>
-      </div>
+    <section class="otros-servicios">
+      <h3>Otros servicios</h3>
+      <label><input type="checkbox" id="servicioInstalacion" /> Instalación</label>
+      <label><input type="checkbox" id="servicioTransporte" /> Transporte</label>
     </section>
-  </main>
 
-  <!-- Scripts -->
-  <script src="scripts/utils.js"></script>
-  <script src="scripts/cotizador.js"></script>
-  <script src="scripts/dataLoader.js"></script>
-  <script src="scripts/storage.js"></script>
-  <script src="scripts/userManager.js"></script>
-</body>
-</html>
+    <section class="entrega">
+      <label for="entrega">Entrega en:</label>
+      <select id="entrega">
+        <option value="Fabrica">Fá

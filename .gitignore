@@ -1,10 +1,16 @@
-# Archivos del sistema
+# Ignorar dependencias si decides usar npm en el futuro
+/node_modules/
+dist/
+build/
+
+# Archivos temporales del sistema
 .DS_Store
 Thumbs.db
 
-# Archivos temporales y logs
+# Configuración local
+*.env
 *.log
-*.tmp
 
-# Archivos de entorno (si los usas en el futuro)
-.env
+# Archivos sensibles (usuarios, precios en prod si migras a backend)
+usuarios.json
+precios_base.json

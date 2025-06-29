@@ -1,18 +1,17 @@
 [
   {
+    "usuario": "LTAM",
+    "clave": "6658",
+    "factor": 1
+  },
+  {
     "usuario": "cliente1",
-    "password": "1234",
-    "factor": 1.10
+    "clave": "abc123",
+    "factor": 1.15
   },
   {
     "usuario": "cliente2",
-    "password": "abcd",
-    "factor": 1.25
-  },
-  {
-    "usuario": "matias",
-    "password": "admin",
-    "factor": 1.00,
-    "admin": true
+    "clave": "cliente2pass",
+    "factor": 1.3
   }
 ]

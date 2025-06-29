@@ -1,28 +1,45 @@
-// ⚠️ Este archivo requiere SheetJS (xlsx.full.min.js) para leer archivos .xlsx
+// Cargar archivo de precios y devolver como objeto procesado
+async function fetchPrecios() {
+  try {
+    const res = await fetch("precios_base.json");
+    const rawData = await res.json();
 
-function cargarNuevoListado() {
-  const fileInput = document.getElementById("archivoExcel");
-  const file = fileInput.files[0];
-  if (!file) return alert("Selecciona un archivo primero.");
+    const vidrios = rawData.vidrios.map(item => {
+      return {
+        nombre: item.nombre.trim(),
+        espesor: parseFloat(item.espesor),
+        valor: parsearValor(item.valor)
+      };
+    });
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const data = new Uint8Array(e.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
-    const hoja = workbook.Sheets[workbook.SheetNames[0]];
-    const valores = XLSX.utils.sheet_to_json(hoja, { header: 1 });
+    const separadores = rawData.separadores.map(item => {
+      return {
+        nombre: item.nombre.trim(),
+        espesor: parseFloat(item.espesor),
+        valor: parsearValor(item.valor)
+      };
+    });
 
-    localStorage.setItem("preciosExcel", JSON.stringify(valores));
-    document.getElementById("adminStatus").textContent = "📦 Archivo cargado correctamente.";
-  };
-  reader.readAsArrayBuffer(file);
+    return {
+      vidrios,
+      separadores
+    };
+
+  } catch (err) {
+    console.error("Error al cargar precios:", err);
+    return {
+      vidrios: [],
+      separadores: []
+    };
+  }
 }
 
-function validarAdmin() {
-  const clave = document.getElementById("adminClave").value.trim();
-  if (clave === "6658") {
-    document.getElementById("adminPanel").style.display = "block";
-  } else {
-    alert("Clave incorrecta.");
+// Convierte valores numéricos o deja "n/d", "A PEDIDO"
+function parsearValor(valor) {
+  if (typeof valor === "string") {
+    const v = valor.trim().toUpperCase();
+    if (v === "N/D" || v === "A PEDIDO") return v;
   }
+  const num = parseFloat(valor);
+  return isNaN(num) ? "n/d" : Math.round(num);
 }

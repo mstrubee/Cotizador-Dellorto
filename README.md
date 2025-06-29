@@ -1,29 +1,39 @@
-# Cotizador Dellorto
+# Cotizador GPT
 
-Sistema web para generar cotizaciones de vidrios y termopaneles con precios personalizados por cliente.
+Sistema web para cotizar productos de vidrio y termopaneles con factor personalizado por cliente. Diseñado para ser usado directamente desde navegador, sin backend, con estética minimalista tipo Apple.
 
-## 🧩 Estructura
+## 🔐 Accesos
 
-- `login.html`: inicio de sesión
-- `index.html`: interfaz del cotizador
-- `styles.css`: diseño visual elegante
-- `scripts/`: lógica de cotización, carga, almacenamiento
-- `data/usuarios.json`: lista de usuarios y factores
-- `data/precios-ejemplo.xlsx`: lista de precios base
+- Cliente: credenciales entregadas por el administrador
+- Admin: acceso mediante contraseña `6658`
 
-## 🚀 Uso
+## 🧠 Funcionalidades
 
-1. Abre `login.html` en tu navegador.
-2. Accede con un usuario válido (`usuario: cliente1 / contraseña: 1234`).
-3. Llena la cotización seleccionando tipo, medidas, y servicios.
-4. Revisa el resumen, guarda o imprime.
-5. Si eres admin, carga nuevos precios vía Excel usando la clave `6658`.
+- Login seguro con factor de precio personalizado
+- Cálculo de m², metros lineales, peso y precio por ítem
+- Tipos de vidrio, espesores, terminaciones y perforaciones
+- Termopaneles con doble vidrio + separadores configurables
+- Exportación directa a PDF
+- Guardado automático en LocalStorage
+- Admin Panel para cargar nuevo Excel de precios
+- Visual limpio, botones suaves y UI responsiva
 
-## 📦 Requisitos
+## 📁 Estructura del Proyecto
 
-- Navegador moderno (Chrome, Edge, Firefox)
-- [SheetJS](https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js) para leer `.xlsx`
-
-## 📄 Licencia
-
-Uso privado interno — desarrollado para Matías Strube.
+```plaintext
+.
+├── index.html
+├── login.html
+├── admin.html
+├── styles.css
+├── auth.js
+├── cotizador.js
+├── dataLoader.js
+├── pdfExporter.js
+├── storage.js
+├── utils.js
+├── admin.js
+├── usuarios.json
+├── precios_base.json
+├── README.md
+└── .gitignore

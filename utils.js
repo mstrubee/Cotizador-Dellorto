@@ -1,26 +1,22 @@
-// Convierte milímetros a metros cuadrados
-function calcularM2(ancho, alto) {
-  return (ancho * alto) / 1_000_000;
+// Convertir mm a metros
+function mmToM(mm) {
+  return mm / 1000;
 }
 
-// Convierte milímetros a metros lineales de perímetro
-function calcularML(ancho, alto) {
-  return 2 * (ancho + alto) / 1000;
+// Calcular m²
+function calcularM2(ancho_mm, alto_mm) {
+  const ancho_m = mmToM(ancho_mm);
+  const alto_m = mmToM(alto_mm);
+  return parseFloat((ancho_m * alto_m).toFixed(3));
 }
 
-// Calcula el peso para un vidrio
+// Calcular metros lineales de perímetro
+function calcularML(ancho_mm, alto_mm) {
+  const ancho_m = mmToM(ancho_mm);
+  const alto_m = mmToM(alto_mm);
+  return parseFloat(((2 * ancho_m) + (2 * alto_m)).toFixed(3));
+}
+
+// Calcular peso vidrio
 function calcularPesoVidrio(m2, espesor) {
-  return 2.5 * m2 * espesor;
-}
-
-// Calcula el peso para un termopanel
-function calcularPesoTermopanel(m2, data) {
-  const eA = parseFloat(data.espesorA) || 0;
-  const eB = parseFloat(data.espesorB) || 0;
-  return 2.5 * m2 * (eA + eB);
-}
-
-// Formatea número como "$ 5.000"
-function formatNumber(numero) {
-  return numero.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
+  return p
