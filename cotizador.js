@@ -3,14 +3,12 @@ let preciosBase = {};
 let factorCliente = 1;
 let productosCotizados = [];
 
-// Inicializa la página
 window.onload = async () => {
   cargarUsuarioActivo();
   preciosBase = await fetchPrecios();
   factorCliente = cargarFactorCliente();
   document.getElementById("fechaCotizacion").valueAsDate = new Date();
 
-  // Vincular botones duplicar y eliminar
   document.getElementById("btnDuplicar").addEventListener("click", duplicarSeleccion);
   document.getElementById("btnEliminar").addEventListener("click", eliminarSeleccion);
 };
@@ -32,25 +30,26 @@ async function fetchPrecios() {
 
 function agregarProducto(baseData = null) {
   const id = productosCotizados.length;
+  productosCotizados.push({ id });
+
   const container = document.createElement("div");
-  container.className = "producto fila-producto";
+  container.className = "fila-producto";
   container.id = `linea-${id}`;
 
   container.innerHTML = `
     <input type="checkbox" class="check-linea" />
     <label class="linea-num">${id + 1}</label>
-    <input type="text" placeholder="Nombre" id="nombre-${id}" value="${baseData?.nombre || ''}" />
-    <input type="number" placeholder="Cantidad" id="cantidad-${id}" min="1" value="${baseData?.cantidad || 1}" />
+    <input type="text" id="nombre-${id}" placeholder="Nombre" value="${baseData?.nombre || ''}" />
+    <input type="number" id="cantidad-${id}" placeholder="Cantidad" min="1" value="${baseData?.cantidad || 1}" />
     <select id="tipo-${id}" onchange="actualizarOpciones(${id})">
       <option value="Vidrio" ${baseData?.tipo === "Vidrio" ? 'selected' : ''}>Vidrio</option>
       <option value="Termopanel" ${baseData?.tipo === "Termopanel" ? 'selected' : ''}>Termopanel</option>
     </select>
-    <div id="opciones-${id}" class="subcampos"></div>
-    <div id="precioLinea-${id}" class="precio-linea">$ 0</div>
+    <div class="subcampos" id="opciones-${id}"></div>
+    <div class="precio-linea" id="precioLinea-${id}">$ 0</div>
   `;
 
   document.getElementById("productos").appendChild(container);
-  productosCotizados.push({ id });
   actualizarOpciones(id, baseData);
 }
 window.agregarProducto = agregarProducto;
@@ -60,24 +59,29 @@ function actualizarOpciones(id, baseData = null) {
   const contenedor = document.getElementById(`opciones-${id}`);
   contenedor.innerHTML = "";
 
+  const vidrioOptions = generarOpcionesVidrios();
+
   if (tipo === "Vidrio") {
     contenedor.innerHTML = `
-      <select id="vidrioTipo-${id}" onchange="cargarEspesores(${id})">${generarOpcionesVidrios(baseData?.vidrioTipo)}</select>
+      <select id="vidrioTipo-${id}">${vidrioOptions}</select>
       <select id="espesor-${id}"></select>
-      <input type="number" placeholder="Alto (mm)" id="alto-${id}" value="${baseData?.alto || ''}" />
-      <input type="number" placeholder="Ancho (mm)" id="ancho-${id}" value="${baseData?.ancho || ''}" />
+      <input type="number" id="alto-${id}" placeholder="Alto (mm)" value="${baseData?.alto || ''}" />
+      <input type="number" id="ancho-${id}" placeholder="Ancho (mm)" value="${baseData?.ancho || ''}" />
       <select id="terminacion-${id}"></select>
       <select id="perforacion-${id}"></select>
-      <input type="number" placeholder="N° perf" id="numPerforaciones-${id}" min="0" value="${baseData?.numPerforaciones || 0}" />
+      <input type="number" id="numPerforaciones-${id}" placeholder="N° perf" min="0" value="${baseData?.numPerforaciones || 0}" />
       <select id="destajado-${id}"></select>
-      <input type="number" placeholder="N° dest" id="numDestajes-${id}" min="0" value="${baseData?.numDestajes || 0}" />
+      <input type="number" id="numDestajes-${id}" placeholder="N° dest" min="0" value="${baseData?.numDestajes || 0}" />
     `;
+
+    const tipoVidrio = baseData?.vidrioTipo || document.getElementById(`vidrioTipo-${id}`).value;
+    document.getElementById(`vidrioTipo-${id}`).value = tipoVidrio;
     cargarEspesores(id, null, baseData?.espesor);
   } else {
     contenedor.innerHTML = `
-      <select id="vidrioA-${id}" onchange="cargarEspesores(${id}, 'A')">${generarOpcionesVidrios(baseData?.vidrioA)}</select>
+      <select id="vidrioA-${id}">${vidrioOptions}</select>
       <select id="espesorA-${id}"></select>
-      <select id="vidrioB-${id}" onchange="cargarEspesores(${id}, 'B')">${generarOpcionesVidrios(baseData?.vidrioB)}</select>
+      <select id="vidrioB-${id}">${vidrioOptions}</select>
       <select id="espesorB-${id}"></select>
       <select id="separador-${id}">
         <option value="Separador polisulfuro">Aluminio (sep.PSF)</option>
@@ -90,41 +94,46 @@ function actualizarOpciones(id, baseData = null) {
       <select id="colorSep-${id}">
         <option>Negro</option><option>Plata Mate</option><option>Bronce</option>
       </select>
-      <input type="number" placeholder="Alto (mm)" id="alto-${id}" value="${baseData?.alto || ''}" />
-      <input type="number" placeholder="Ancho (mm)" id="ancho-${id}" value="${baseData?.ancho || ''}" />
+      <input type="number" id="alto-${id}" placeholder="Alto (mm)" value="${baseData?.alto || ''}" />
+      <input type="number" id="ancho-${id}" placeholder="Ancho (mm)" value="${baseData?.ancho || ''}" />
     `;
+
+    document.getElementById(`vidrioA-${id}`).value = baseData?.vidrioA || "Incoloro";
+    document.getElementById(`vidrioB-${id}`).value = baseData?.vidrioB || "Incoloro";
     cargarEspesores(id, 'A', baseData?.espesorA);
     cargarEspesores(id, 'B', baseData?.espesorB);
   }
 }
 
-function generarOpcionesVidrios(seleccionado = "") {
+function generarOpcionesVidrios() {
   const permitidos = [
     "Incoloro", "Bronce", "Mateluz", "Semilla", "Templado",
     "Laminado_33_1", "Laminado_44_1", "Laminado_55_1", "Laminado_66_1",
     "Laminado_33_2", "Laminado_44_2", "Laminado_55_2", "Laminado_66_2",
     "Laminado_templado", "LowE Eco", "LowE Super"
   ];
-
-  const tiposUnicos = [
-    ...new Set(preciosBase.vidrios.map(v => v.nombre))
-  ].filter(v => permitidos.includes(v));
-
-  return tiposUnicos.map(v => 
-    `<option value="${v}" ${v === seleccionado ? 'selected' : ''}>${v}</option>`
-  ).join("");
+  const tiposUnicos = [...new Set(preciosBase.vidrios.map(v => v.nombre))];
+  return tiposUnicos
+    .filter(v => permitidos.includes(v))
+    .map(v => `<option value="${v}">${v}</option>`)
+    .join("");
 }
 
-function cargarEspesores(id, parte = "", espesorSeleccionado = null) {
-  const selectId = parte ? `vidrio${parte}-${id}` : `vidrioTipo-${id}`;
-  const tipo = document.getElementById(selectId).value;
+function cargarEspesores(id, parte = null, selected = null) {
+  const tipo = parte
+    ? document.getElementById(`vidrio${parte}-${id}`).value
+    : document.getElementById(`vidrioTipo-${id}`).value;
+
   const espesores = preciosBase.vidrios
     .filter(v => v.nombre === tipo)
     .map(v => v.espesor);
-  const target = document.getElementById(`espesor${parte}-${id}`);
-  target.innerHTML = espesores.map(e => 
-    `<option ${e === espesorSeleccionado ? 'selected' : ''}>${e}</option>`
-  ).join("");
+
+  const targetId = parte ? `espesor${parte}-${id}` : `espesor-${id}`;
+  const target = document.getElementById(targetId);
+
+  target.innerHTML = espesores
+    .map(e => `<option ${e === selected ? 'selected' : ''}>${e}</option>`)
+    .join("");
 
   if (!parte) cargarTerminaciones(id);
 }
@@ -139,15 +148,12 @@ function cargarTerminaciones(id) {
   perforacion.innerHTML = `<option value="">Sin perforación</option>`;
   destajado.innerHTML = `<option value="">Sin destaje</option>`;
 
-  if ([4, 6, 8, 10].includes(espesor)) {
+  if ([4, 6, 8, 10].includes(espesor))
     terminacion.innerHTML += `<option value="Botado Arista">Botado Arista</option>`;
-  }
-  if ([4, 5, 6].includes(espesor)) {
+  if ([4, 5, 6].includes(espesor))
     terminacion.innerHTML += `<option value="Botado Arista x TP">Botado Arista x TP</option>`;
-  }
-  if (espesor >= 4 && espesor <= 19) {
+  if (espesor >= 4 && espesor <= 19)
     perforacion.innerHTML += `<option value="Perforado normal">Perforado normal</option>`;
-  }
   if (espesor >= 4 && espesor <= 12) {
     perforacion.innerHTML += `<option value="Perforado avellanado">Perforado avellanado</option>`;
     destajado.innerHTML += `<option value="Destajado normal">Destajado normal</option>`;
@@ -155,29 +161,25 @@ function cargarTerminaciones(id) {
   }
 }
 
-// Duplicar línea seleccionada
 function duplicarSeleccion() {
-  const seleccionados = document.querySelectorAll(".check-linea:checked");
-  if (seleccionados.length !== 1) {
-    alert("Selecciona una sola línea para duplicar.");
+  const seleccionado = document.querySelector(".check-linea:checked");
+  if (!seleccionado) {
+    alert("Seleccione una línea para duplicar.");
     return;
   }
-  const id = seleccionados[0].closest(".producto").id.replace("linea-", "");
-  const copia = document.getElementById(`linea-${id}`);
-  const inputs = copia.querySelectorAll("input, select");
-  const datos = {};
+
+  const id = seleccionado.closest(".fila-producto").id.replace("linea-", "");
+  const baseData = {};
+  const inputs = document.querySelectorAll(`#linea-${id} input, #linea-${id} select`);
   inputs.forEach(el => {
     const campo = el.id.split("-")[0];
-    datos[campo] = el.value;
+    baseData[campo] = el.value;
   });
-  agregarProducto(datos);
+
+  agregarProducto(baseData);
 }
 
-// Eliminar líneas seleccionadas
 function eliminarSeleccion() {
   const seleccionados = document.querySelectorAll(".check-linea:checked");
-  seleccionados.forEach(check => {
-    const div = check.closest(".producto");
-    div.remove();
-  });
+  seleccionados.forEach(check => check.closest(".fila-producto").remove());
 }
