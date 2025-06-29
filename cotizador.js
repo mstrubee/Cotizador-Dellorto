@@ -25,6 +25,7 @@ const espesoresPorVidrio = {
 };
 
 const coloresSeparador = ["Negro", "Plata Mate", "Bronce"];
+const espesoresSeparador = [6, 8, 10, 12, 15, 19, 20];
 
 async function cargarPrecios() {
   try {
@@ -38,7 +39,7 @@ async function cargarPrecios() {
 }
 
 function agregarProducto() {
-  const tbodyUSA. tbody = document.getElementById("cuerpoTabla");
+  const tbody = document.getElementById("cuerpoTabla");
   const id = contadorProductos++;
 
   const tr = document.createElement("tr");
@@ -57,7 +58,8 @@ function agregarProducto() {
     <td><select id="espesorA-${id}" onchange="actualizarCamposPorEspesor(${id}); calcularLinea(${id})"></select></td>
     <td><select id="vidrioB-${id}" onchange="actualizarEspesores(${id}, 'B'); calcularLinea(${id})" style="display: none;"></select></td>
     <td><select id="espesorB-${id}" onchange="actualizarCamposPorEspesor(${id}); calcularLinea(${id})" style="display: none;"></select></td>
-    <td><select id="separador-${id}" onchange="calcularLinea(${id})" style="display: none;"></select></td>
+    <td><select id="separador-${id}" onchange="actualizarEspesoresSeparador(${id}); calcularLinea(${id})" style="display: none;"></select></td>
+    <td><select id="espesorSeparador-${id}" onchange="calcularLinea(${id})" style="display: none;"></select></td>
     <td><select id="colorSeparador-${id}" onchange="calcularLinea(${id})" style="display: none;"></select></td>
     <td><select id="terminacion-${id}" onchange="calcularLinea(${id})"></select></td>
     <td><select id="perforacion-${id}" onchange="calcularLinea(${id})"></select><input type="number" id="cantPerforacion-${id}" min="0" value="0" style="width: 60px" onchange="calcularLinea(${id})"></td>
@@ -78,11 +80,13 @@ function actualizarCampos(id) {
   document.getElementById(`vidrioB-${id}`).style.display = tipo === "Termopanel" ? "table-cell" : "none";
   document.getElementById(`espesorB-${id}`).style.display = tipo === "Termopanel" ? "table-cell" : "none";
   document.getElementById(`separador-${id}`).style.display = tipo === "Termopanel" ? "table-cell" : "none";
+  document.getElementById(`espesorSeparador-${id}`).style.display = tipo === "Termopanel" ? "table-cell" : "none";
   document.getElementById(`colorSeparador-${id}`).style.display = tipo === "Termopanel" ? "table-cell" : "none";
   cargarOpcionesVidrio(id, 'A');
   if (tipo === "Termopanel") {
     cargarOpcionesVidrio(id, 'B');
     cargarOpcionesSeparador(id);
+    actualizarEspesoresSeparador(id);
     cargarOpcionesColorSeparador(id);
   }
   actualizarCamposPorEspesor(id);
@@ -107,6 +111,17 @@ function cargarOpcionesSeparador(id) {
     const option = document.createElement("option");
     option.value = sep;
     option.text = sep;
+    select.appendChild(option);
+  });
+}
+
+function actualizarEspesoresSeparador(id) {
+  const select = document.getElementById(`espesorSeparador-${id}`);
+  select.innerHTML = '<option value="">Selecciona</option>';
+  espesoresSeparador.forEach(e => {
+    const option = document.createElement("option");
+    option.value = e;
+    option.text = `${e} mm`;
     select.appendChild(option);
   });
 }
@@ -172,13 +187,14 @@ function calcularLinea(id) {
   const ancho_mm = parseFloat(document.getElementById(`ancho-${id}`).value || 0);
   const espesorA = parseFloat(document.getElementById(`espesorA-${id}`).value || 0);
   const espesorB = parseFloat(document.getElementById(`espesorB-${id}`).value || 0);
+  const espesorSeparador = parseFloat(document.getElementById(`espesorSeparador-${id}`).value || 0);
   const cantidad = parseInt(document.getElementById(`cantidad-${id}`).value || 1);
   const vidrioA = document.getElementById(`vidrioA-${id}`).value;
   const vidrioB = document.getElementById(`vidrioB-${id}`).value;
   const tipo = document.getElementById(`tipo-${id}`).value;
   const separador = document.getElementById(`separador-${id}`).value;
   const colorSeparador = document.getElementById(`colorSeparador-${id}`).value;
-  const terminacion = document.getElementById(`terminacion-${id}`).value;
+  const terminacion = doocument.getElementById(`terminacion-${id}`).value;
   const perforacion = document.getElementById(`perforacion-${id}`).value;
   const cantPerforacion = parseInt(document.getElementById(`cantPerforacion-${id}`).value || 0);
   const destajado = document.getElementById(`destajado-${id}`).value;
@@ -208,8 +224,8 @@ function calcularLinea(id) {
     } else if (vidrioBData?.precio_m2 === "A PEDIDO") {
       aPedido = true;
     }
-    if (separador) {
-      const separadorData = preciosBase.separadores?.find(s => s.nombre === separador && s.espesor === espesorA);
+    if (separador && espesorSeparador) {
+      const separadorData = preciosBase.separadores?.find(s => s.nombre === separador && s.espesor === espesorSeparador);
       if (separadorData && separadorData.precio_ml !== "n/d") {
         precio += parseFloat(separadorData.precio_ml) * ml * factor;
       } else if (separadorData?.precio_ml === "n/d") {
@@ -261,6 +277,7 @@ function calcularLinea(id) {
     vidrioB,
     espesorB,
     separador,
+    espesorSeparador,
     colorSeparador,
     terminacion,
     perforacion,
@@ -324,6 +341,7 @@ function agregarSimilar() {
     actualizarEspesores(newId, 'B');
     document.getElementById(`espesorB-${newId}`).value = producto.espesorB;
     document.getElementById(`separador-${newId}`).value = producto.separador;
+    document.getElementById(`espesorSeparador-${newId}`).value = producto.espesorSeparador;
     document.getElementById(`colorSeparador-${newId}`).value = producto.colorSeparador;
   }
   document.getElementById(`terminacion-${newId}`).value = producto.terminacion;

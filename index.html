@@ -79,33 +79,36 @@
     <button id="borrarSeleccion">Borrar Selección</button>
     <button onclick="guardarCotizacion()">Guardar Cotización</button>
     <button onclick="exportarPDF()">Exportar a PDF</button>
-    <table id="tablaResumen">
-      <thead>
-        <tr>
-          <th></th>
-          <th>#</th>
-          <th>Nombre</th>
-          <th>Cantidad</th>
-          <th>Elemento</th>
-          <th>Alto (mm)</th>
-          <th>Ancho (mm)</th>
-          <th>Vidrio A</th>
-          <th>Espesor A</th>
-          <th>Vidrio B</th>
-          <th>Espesor B</th>
-          <th>Separador</th>
-          <th>Color Separador</th>
-          <th>Terminación</th>
-          <th>Perforación</th>
-          <th>Destajado</th>
-          <th>m²</th>
-          <th>mL</th>
-          <th>Peso</th>
-          <th>Precio</th>
-        </tr>
-      </thead>
-      <tbody id="cuerpoTabla"></tbody>
-    </table>
+    <div class="table-container">
+      <table id="tablaResumen">
+        <thead>
+          <tr>
+            <th></th>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Elemento</th>
+            <th>Alto (mm)</th>
+            <th>Ancho (mm)</th>
+            <th>Vidrio A</th>
+            <th>Espesor A</th>
+            <th>Vidrio B</th>
+            <th>Espesor B</th>
+            <th>Separador</th>
+            <th>Espesor Sep.</th>
+            <th>Color Sep.</th>
+            <th>Terminación</th>
+            <th>Perforación</th>
+            <th>Destajado</th>
+            <th>m²</th>
+            <th>mL</th>
+            <th>Peso</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+      </table>
+    </div>
     <div id="resumenCotizacion">
       <p>Total Neto: $0</p>
       <p>IVA (19%): $0</p>

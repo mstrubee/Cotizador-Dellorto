@@ -40,14 +40,16 @@
     {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 8.0, "precio_ml": 2182},
     {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 10.0, "precio_ml": 2182},
     {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 12.0, "precio_ml": 2182},
-    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 13.0, "precio_ml": "n/d"},
     {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 15.0, "precio_ml": 2250},
+    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 19.0, "precio_ml": "n/d"},
+    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 20.0, "precio_ml": "n/d"},
     {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 6.0, "precio_ml": 2545},
     {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 8.0, "precio_ml": 2545},
     {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 10.0, "precio_ml": 2545},
     {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 12.0, "precio_ml": 2545},
-    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 13.0, "precio_ml": "n/d"},
-    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 15.0, "precio_ml": 3636}
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 15.0, "precio_ml": 3636},
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 19.0, "precio_ml": "n/d"},
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 20.0, "precio_ml": "n/d"}
   ],
   "terminaciones": [
     {"tipo": "Terminacion", "nombre": "Botado Arista", "espesor": 4, "precio_ml": 500},

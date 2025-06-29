@@ -16,18 +16,17 @@ header {
 }
 
 .container {
-  max-width: 1200px;
-  margin: auto;
+  max-width: 95vw; /* Usa casi todo el ancho de la pantalla */
+  margin: 2rem auto;
   padding: 2rem;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   border-radius: 16px;
-  margin-top: 2rem;
 }
 
 h1, h2 {
   font-size: 1.8rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 h3 {
@@ -38,14 +37,19 @@ h3 {
 form {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.table-container {
+  overflow-x: auto; /* Permite desplazamiento horizontal en pantallas pequeñas */
   margin-bottom: 1rem;
 }
 
 table {
   width: 100%;
+  min-width: 1200px; /* Asegura que la tabla tenga suficiente espacio */
   border-collapse: collapse;
-  margin-bottom: 1rem;
 }
 
 th, td {
@@ -53,14 +57,17 @@ th, td {
   padding: 0.75rem;
   text-align: left;
   vertical-align: middle;
+  font-size: 0.95rem; /* Tamaño de fuente legible */
 }
 
 th {
   background-color: #f2f2f2;
+  font-weight: 600;
 }
 
-input, select {
+td input, td select {
   width: 100%;
+  min-width: 80px; /* Ancho mínimo para inputs y selects */
   padding: 0.5rem;
   font-size: 0.95rem;
   border: 1px solid #ccc;
@@ -69,7 +76,7 @@ input, select {
   transition: border-color 0.3s;
 }
 
-input:focus, select:focus {
+td input:focus, td select:focus {
   border-color: #007aff;
   outline: none;
 }
