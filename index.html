@@ -55,6 +55,7 @@
   <button onclick="duplicarSeleccion()">+ Añadir similar</button>
   <button onclick="borrarSeleccion()">Borrar Selección</button>
   <button onclick="exportarPDF()">Descargar PDF</button>
+  <button onclick="borrarCotizacionLocal()">🗑 Borrar Cotización Local</button>
 
   <hr />
   <div id="resumenCotizacion">
@@ -64,7 +65,6 @@
   </div>
 
   <script>
-    // Fecha automática
     document.getElementById("fechaCotizacion").innerText = new Date().toLocaleDateString("es-CL");
   </script>
 </body>
