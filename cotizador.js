@@ -163,9 +163,14 @@ function actualizarCamposPorEspesor(id) {
   terminacion.innerHTML = '<option value="">Ninguna</option>';
   if (tipo === "Vidrio" && espesorA && [4, 5, 6, 8, 10].includes(espesorA)) {
     terminacion.innerHTML += '<option value="Botado arista">Botado arista</option>';
-  } else if (tipo === "Termopanel" && espesorA && [4, 5, 6].includes(espesorA)) {
-    terminacion.innerHTML += '<option value="Botado arista x tp">Botado arista x tp</option>';
-    terminacion.value = "Botado arista x tp";
+  } else if (tipo === "Termopanel" && espesorA) {
+    if ([4, 5, 6].includes(espesorA)) {
+      terminacion.innerHTML += '<option value="Botado arista x tp">Botado arista x tp</option>';
+      terminacion.value = "Botado arista x tp";
+    } else {
+      terminacion.innerHTML += '<option value="Crudo">Crudo</option>';
+      terminacion.value = "Crudo";
+    }
   }
 
   const perforacion = document.getElementById(`perforacion-${id}`);
@@ -202,7 +207,7 @@ function calcularLinea(id) {
   const cantPerforacion = parseInt(document.getElementById(`cantPerforacion-${id}`).value || 0);
   const destajado = document.getElementById(`destajado-${id}`).value;
   const cantDestajado = parseInt(document.getElementById(`cantDestajado-${id}`).value || 0);
-  const factor = parseFloat(localStorage.getItem("factor") || 1);
+  const factor = parseFloat(localStorage.getItem("factor") || 1); // Default to 1 if not set
 
   const m2 = calcularM2(ancho_mm, alto_mm) * cantidad;
   const ml = calcularML(ancho_mm, alto_mm) * cantidad;
@@ -241,7 +246,7 @@ function calcularLinea(id) {
     }
   }
 
-  if (terminacion && preciosBase.terminaciones) {
+  if (terminacion && preciosBase.terminaciones && terminacion !== "Crudo") {
     const terminacionData = preciosBase.terminaciones.find(t => t.nombre === terminacion && t.espesor === espesorA);
     if (terminacionData && terminacionData.precio_ml !== "n/d") {
       precio += parseFloat(terminacionData.precio_ml) * ml * factor;
