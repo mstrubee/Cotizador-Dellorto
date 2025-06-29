@@ -32,6 +32,7 @@ async function cargarPrecios() {
     const res = await fetch("precios_base.json");
     preciosBase = await res.json();
     localStorage.setItem("precios", JSON.stringify(preciosBase));
+    console.log("Precios cargados:", preciosBase);
   } catch (e) {
     console.error("Error al cargar precios_base.json:", e);
     preciosBase = JSON.parse(localStorage.getItem("precios") || "{}");
@@ -207,7 +208,8 @@ function calcularLinea(id) {
   const cantPerforacion = parseInt(document.getElementById(`cantPerforacion-${id}`).value || 0);
   const destajado = document.getElementById(`destajado-${id}`).value;
   const cantDestajado = parseInt(document.getElementById(`cantDestajado-${id}`).value || 0);
-  const factor = parseFloat(localStorage.getItem("factor") || 1); // Default to 1 if not set
+  const factor = parseFloat(localStorage.getItem("factor") || 1); // Default to 1
+  console.log(`Factor: ${factor}, Precio Base Incoloro 4mm: ${preciosBase.vidrios.find(v => v.nombre === "Incoloro" && v.espesor === 4)?.precio_m2 || "No encontrado"}`);
 
   const m2 = calcularM2(ancho_mm, alto_mm) * cantidad;
   const ml = calcularML(ancho_mm, alto_mm) * cantidad;
