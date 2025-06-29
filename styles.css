@@ -8,7 +8,7 @@ body {
 
 header {
   background-color: #fff;
-  padding: 1rem 2rem;
+  padding: 0.8rem 1.5rem;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
@@ -16,48 +16,48 @@ header {
 }
 
 .container {
-  max-width: 95vw; /* Usa casi todo el ancho de la pantalla */
-  margin: 2rem auto;
-  padding: 2rem;
+  max-width: 95vw;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
 h1, h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
 }
 
 h3 {
-  font-size: 1.4rem;
-  margin-top: 2rem;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
 }
 
 form {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .table-container {
-  overflow-x: auto; /* Permite desplazamiento horizontal en pantallas pequeñas */
+  overflow-x: auto;
   margin-bottom: 1rem;
 }
 
 table {
   width: 100%;
-  min-width: 1200px; /* Asegura que la tabla tenga suficiente espacio */
+  min-width: 1200px;
   border-collapse: collapse;
 }
 
 th, td {
   border: 1px solid #e0e0e0;
-  padding: 0.75rem;
+  padding: 0.5rem;
   text-align: left;
   vertical-align: middle;
-  font-size: 0.95rem; /* Tamaño de fuente legible */
+  font-size: 0.85rem;
 }
 
 th {
@@ -67,11 +67,11 @@ th {
 
 td input, td select {
   width: 100%;
-  min-width: 80px; /* Ancho mínimo para inputs y selects */
-  padding: 0.5rem;
-  font-size: 0.95rem;
+  min-width: 60px;
+  padding: 0.4rem;
+  font-size: 0.85rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 6px;
   box-sizing: border-box;
   transition: border-color 0.3s;
 }
@@ -82,14 +82,15 @@ td input:focus, td select:focus {
 }
 
 button {
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   margin: 0.2rem;
   border: none;
   background-color: #007aff;
   color: white;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.9rem;
   transition: background-color 0.3s;
 }
 
@@ -100,6 +101,7 @@ button:hover {
 #resumenCotizacion p {
   font-weight: bold;
   margin: 0.5rem 0;
+  font-size: 0.9rem;
 }
 
 select[disabled], input[disabled] {

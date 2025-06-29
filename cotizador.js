@@ -89,6 +89,10 @@ function actualizarCampos(id) {
     actualizarEspesoresSeparador(id);
     cargarOpcionesColorSeparador(id);
   }
+  actualizarEspesores(id, 'A');
+  if (tipo === "Termopanel") {
+    actualizarEspesores(id, 'B');
+  }
   actualizarCamposPorEspesor(id);
 }
 
@@ -141,7 +145,7 @@ function actualizarEspesores(id, vidrio) {
   const tipoVidrio = document.getElementById(`vidrio${vidrio}-${id}`).value;
   const select = document.getElementById(`espesor${vidrio}-${id}`);
   select.innerHTML = '<option value="">Selecciona</option>';
-  if (espesoresPorVidrio[tipoVidrio]) {
+  if (tipoVidrio && espesoresPorVidrio[tipoVidrio]) {
     espesoresPorVidrio[tipoVidrio].forEach(e => {
       const option = document.createElement("option");
       option.value = e;
@@ -149,7 +153,6 @@ function actualizarEspesores(id, vidrio) {
       select.appendChild(option);
     });
   }
-  actualizarCamposPorEspesor(id);
 }
 
 function actualizarCamposPorEspesor(id) {
@@ -158,27 +161,27 @@ function actualizarCamposPorEspesor(id) {
 
   const terminacion = document.getElementById(`terminacion-${id}`);
   terminacion.innerHTML = '<option value="">Ninguna</option>';
-  if (tipo === "Vidrio") {
-    if ([4, 6, 8, 10].includes(espesorA)) {
-      terminacion.innerHTML += "<option value='Botado Arista'>Botado Arista</option>";
-    }
-  } else {
-    if ([4, 5, 6].includes(espesorA)) {
-      terminacion.innerHTML += "<option value='Botado Arista x TP'>Botado Arista x TP</option>";
-      terminacion.value = "Botado Arista x TP"; // Por defecto para termopaneles
-    }
+  if (tipo === "Vidrio" && espesorA && [4, 5, 6, 8, 10].includes(espesorA)) {
+    terminacion.innerHTML += '<option value="Botado arista">Botado arista</option>';
+  } else if (tipo === "Termopanel" && espesorA && [4, 5, 6].includes(espesorA)) {
+    terminacion.innerHTML += '<option value="Botado arista x tp">Botado arista x tp</option>';
+    terminacion.value = "Botado arista x tp";
   }
 
   const perforacion = document.getElementById(`perforacion-${id}`);
   perforacion.innerHTML = '<option value="">Ninguna</option>';
-  if (espesorA >= 4 && espesorA <= 19) perforacion.innerHTML += "<option value='Perforado normal'>Perforado normal</option>";
-  if (espesorA >= 4 && espesorA <= 12) perforacion.innerHTML += "<option value='Perforado avellanado'>Perforado avellanado</option>";
+  if (espesorA >= 4 && espesorA <= 19) {
+    perforacion.innerHTML += '<option value="Perforado normal">Perforado normal</option>';
+  }
+  if (espesorA >= 4 && espesorA <= 12) {
+    perforacion.innerHTML += '<option value="Perforado avellanado">Perforado avellanado</option>';
+  }
 
   const destajado = document.getElementById(`destajado-${id}`);
   destajado.innerHTML = '<option value="">Ninguna</option>';
   if (espesorA >= 4 && espesorA <= 12) {
-    destajado.innerHTML += "<option value='Destajado normal'>Destajado normal</option>";
-    destajado.innerHTML += "<option value='Destajado central'>Destajado central</option>";
+    destajado.innerHTML += '<option value="Destajado normal">Destajado normal</option>';
+    destajado.innerHTML += '<option value="Destajado central">Destajado central</option>';
   }
 }
 
@@ -208,55 +211,59 @@ function calcularLinea(id) {
   let precio = 0;
   let aPedido = false;
 
-  if (vidrioA && espesorA) {
-    const vidrioAData = preciosBase.vidrios?.find(v => v.nombre === vidrioA && v.espesor === espesorA);
-    if (vidrioAData && vidrioAData.precio_m2 !== "A PEDIDO") {
-      precio += parseFloat(vidrioAData.precio_m2) * m2 * factor;
-    } else if (vidrioAData?.precio_m2 === "A PEDIDO") {
-      aPedido = true;
-    }
-  }
-
-  if (tipo === "Termopanel" && vidrioB && espesorB) {
-    const vidrioBData = preciosBase.vidrios?.find(v => v.nombre === vidrioB && v.espesor === espesorB);
-    if (vidrioBData && vidrioBData.precio_m2 !== "A PEDIDO") {
-      precio += parseFloat(vidrioBData.precio_m2) * m2 * factor;
-    } else if (vidrioBData?.precio_m2 === "A PEDIDO") {
-      aPedido = true;
-    }
-    if (separador && espesorSeparador) {
-      const separadorData = preciosBase.separadores?.find(s => s.nombre === separador && s.espesor === espesorSeparador);
-      if (separadorData && separadorData.precio_ml !== "n/d") {
-        precio += parseFloat(separadorData.precio_ml) * ml * factor;
-      } else if (separadorData?.precio_ml === "n/d") {
+  if (vidrioA && espesorA && preciosBase.vidrios) {
+    const vidrioAData = preciosBase.vidrios.find(v => v.nombre === vidrioA && v.espesor === espesorA);
+    if (vidrioAData) {
+      if (vidrioAData.precio_m2 !== "A PEDIDO") {
+        precio += parseFloat(vidrioAData.precio_m2) * m2 * factor;
+      } else {
         aPedido = true;
       }
     }
   }
 
-  if (terminacion) {
-    const terminacionData = preciosBase.terminaciones?.find(t => t.nombre === terminacion && t.espesor === espesorA);
+  if (tipo === "Termopanel" && vidrioB && espesorB && preciosBase.vidrios) {
+    const vidrioBData = preciosBase.vidrios.find(v => v.nombre === vidrioB && v.espesor === espesorB);
+    if (vidrioBData) {
+      if (vidrioBData.precio_m2 !== "A PEDIDO") {
+        precio += parseFloat(vidrioBData.precio_m2) * m2 * factor;
+      } else {
+        aPedido = true;
+      }
+    }
+    if (separador && espesorSeparador && preciosBase.separadores) {
+      const separadorData = preciosBase.separadores.find(s => s.nombre === separador && s.espesor === espesorSeparador);
+      if (separadorData && separadorData.precio_ml !== "n/d") {
+        precio += parseFloat(separadorData.precio_ml) * ml * factor;
+      } else if (separadorData) {
+        aPedido = true;
+      }
+    }
+  }
+
+  if (terminacion && preciosBase.terminaciones) {
+    const terminacionData = preciosBase.terminaciones.find(t => t.nombre === terminacion && t.espesor === espesorA);
     if (terminacionData && terminacionData.precio_ml !== "n/d") {
       precio += parseFloat(terminacionData.precio_ml) * ml * factor;
-    } else if (terminacionData?.precio_ml === "n/d") {
+    } else if (terminacionData) {
       aPedido = true;
     }
   }
 
-  if (perforacion && cantPerforacion > 0) {
-    const perforacionData = preciosBase.perforaciones?.find(p => p.nombre === perforacion && p.espesor === espesorA);
+  if (perforacion && cantPerforacion > 0 && preciosBase.perforaciones) {
+    const perforacionData = preciosBase.perforaciones.find(p => p.nombre === perforacion && p.espesor === espesorA);
     if (perforacionData && perforacionData.precio !== "n/d") {
       precio += parseFloat(perforacionData.precio) * cantPerforacion * factor;
-    } else if (perforacionData?.precio === "n/d") {
+    } else if (perforacionData) {
       aPedido = true;
     }
   }
 
-  if (destajado && cantDestajado > 0) {
-    const destajadoData = preciosBase.destajados?.find(d => d.nombre === destajado && d.espesor === espesorA);
+  if (destajado && cantDestajado > 0 && preciosBase.destajados) {
+    const destajadoData = preciosBase.destajados.find(d => d.nombre === destajado && d.espesor === espesorA);
     if (destajadoData && destajadoData.precio !== "n/d") {
       precio += parseFloat(destajadoData.precio) * cantDestajado * factor;
-    } else if (destajadoData?.precio === "n/d") {
+    } else if (destajadoData) {
       aPedido = true;
     }
   }
@@ -287,7 +294,9 @@ function calcularLinea(id) {
     m2,
     ml,
     peso,
-    precio: aPedido ? "A PEDIDO" : precio
+    precio: aPedido ? "A PEDIDO" : precio,
+    alto_mm,
+    ancho_mm
   };
 
   actualizarResumen();
@@ -328,27 +337,27 @@ function agregarSimilar() {
 
   agregarProducto();
   const newId = contadorProductos - 1;
-  document.getElementById(`nombre-${newId}`).value = producto.nombre;
-  document.getElementById(`cantidad-${newId}`).value = producto.cantidad;
-  document.getElementById(`tipo-${newId}`).value = producto.tipo;
-  document.getElementById(`alto-${newId}`).value = producto.alto_mm;
-  document.getElementById(`ancho-${newId}`).value = producto.ancho_mm;
-  document.getElementById(`vidrioA-${newId}`).value = producto.vidrioA;
+  document.getElementById(`nombre-${newId}`).value = producto.nombre || "";
+  document.getElementById(`cantidad-${newId}`).value = producto.cantidad || 1;
+  document.getElementById(`tipo-${newId}`).value = producto.tipo || "Vidrio";
+  document.getElementById(`alto-${newId}`).value = producto.alto_mm || 1000;
+  document.getElementById(`ancho-${newId}`).value = producto.ancho_mm || 1000;
+  document.getElementById(`vidrioA-${newId}`).value = producto.vidrioA || "";
   actualizarEspesores(newId, 'A');
-  document.getElementById(`espesorA-${newId}`).value = producto.espesorA;
+  document.getElementById(`espesorA-${newId}`).value = producto.espesorA || "";
   if (producto.tipo === "Termopanel") {
-    document.getElementById(`vidrioB-${newId}`).value = producto.vidrioB;
+    document.getElementById(`vidrioB-${newId}`).value = producto.vidrioB || "";
     actualizarEspesores(newId, 'B');
-    document.getElementById(`espesorB-${newId}`).value = producto.espesorB;
-    document.getElementById(`separador-${newId}`).value = producto.separador;
-    document.getElementById(`espesorSeparador-${newId}`).value = producto.espesorSeparador;
-    document.getElementById(`colorSeparador-${newId}`).value = producto.colorSeparador;
+    document.getElementById(`espesorB-${newId}`).value = producto.espesorB || "";
+    document.getElementById(`separador-${newId}`).value = producto.separador || "";
+    document.getElementById(`espesorSeparador-${newId}`).value = producto.espesorSeparador || "";
+    document.getElementById(`colorSeparador-${newId}`).value = producto.colorSeparador || "";
   }
-  document.getElementById(`terminacion-${newId}`).value = producto.terminacion;
-  document.getElementById(`perforacion-${newId}`).value = producto.perforacion;
-  document.getElementById(`cantPerforacion-${newId}`).value = producto.cantPerforacion;
-  document.getElementById(`destajado-${newId}`).value = producto.destajado;
-  document.getElementById(`cantDestajado-${newId}`).value = producto.cantDestajado;
+  document.getElementById(`terminacion-${newId}`).value = producto.terminacion || "";
+  document.getElementById(`perforacion-${newId}`).value = producto.perforacion || "";
+  document.getElementById(`cantPerforacion-${newId}`).value = producto.cantPerforacion || 0;
+  document.getElementById(`destajado-${newId}`).value = producto.destajado || "";
+  document.getElementById(`cantDestajado-${newId}`).value = producto.cantDestajado || 0;
   actualizarCamposPorEspesor(newId);
   calcularLinea(newId);
 }
@@ -364,7 +373,6 @@ function borrarSeleccion() {
     productosCotizados[id] = null;
     checkbox.closest("tr").remove();
   });
-  // Re-numerar líneas
   const filas = document.querySelectorAll("#cuerpoTabla tr");
   productosCotizados = productosCotizados.filter(p => p);
   filas.forEach((fila, index) => {
@@ -373,7 +381,6 @@ function borrarSeleccion() {
     if (productosCotizados[oldId]) {
       productosCotizados[oldId].id = index + 1;
     }
-    // Actualizar IDs de los elementos
     fila.querySelectorAll("[id]").forEach(el => {
       const oldIdMatch = el.id.match(/-(.*)$/);
       if (oldIdMatch) {
