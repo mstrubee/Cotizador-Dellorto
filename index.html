@@ -66,10 +66,6 @@
       <input type="text" id="presupuesto" placeholder="Presupuesto">
       <input type="text" id="folio" placeholder="Folio" required>
       <input type="text" id="supervisor" placeholder="Supervisor">
-      <select id="entrega" required>
-        <option value="">Selecciona Entrega</option>
-        <option value="Fábrica">Fábrica</option>
-        <option value="Obra">Obra</option>
       </select>
       <label><input type="checkbox" id="servicioInstalacion"> Instalación</label>
       <label><input type="checkbox" id="servicioTransporte"> Transporte</label>
@@ -129,7 +125,10 @@
             <th>Peso</th>
             <th>Precio</th>
             <th>Entrega</th>
-            <th>Seleccionar</th>
+            <select id="entrega" required>
+        <option value="">Selecciona Entrega</option>
+        <option value="Fábrica">Fábrica</option>
+        <option value="Obra">Obra</option>
           </tr>
         </thead>
         <tbody id="cuerpoTabla"></tbody>
