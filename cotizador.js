@@ -4,24 +4,24 @@ let productosCotizados = [];
 
 const tiposVidrio = [
   "Incoloro", "Mateluz", "Templado", "Laminado_33_1", "Laminado_44_1", "Laminado_55_1", "Laminado_66_1",
-  "Laminado_33_2", "Laminado_44_2", "Laminado_55_2", "Laminado_66_2", "Laminado_templado", "Low E Eco", "Low E Super"
+  "Laminado_33_2", "Laminado_44_2", "Laminado_55_2", "Laminado_66_2", "Laminado_templado", "LowE Eco", "LowE Plus"
 ];
 
 const espesoresPorVidrio = {
   "Incoloro": [4, 5, 6, 8, 10, 12],
   "Mateluz": [4, 5, 6],
   "Templado": [4, 5, 6, 8, 10, 12],
-  "Laminado_33_1": [6, 8, 10, 12],
-  "Laminado_44_1": [6, 8, 10, 12],
-  "Laminado_55_1": [6, 8, 10, 12],
-  "Laminado_66_1": [6, 8, 10, 12],
-  "Laminado_33_2": [6, 8, 10, 12],
-  "Laminado_44_2": [6, 8, 10, 12],
-  "Laminado_55_2": [6, 8, 10, 12],
-  "Laminado_66_2": [6, 8, 10, 12],
+  "Laminado_33_1": [6],
+  "Laminado_44_1": [8],
+  "Laminado_55_1": [10],
+  "Laminado_66_1": [12],
+  "Laminado_33_2": [6],
+  "Laminado_44_2": [8],
+  "Laminado_55_2": [10],
+  "Laminado_66_2": [12],
   "Laminado_templado": [8, 10, 13.52, 17.52, 21.52],
-  "Low E Eco": [4, 5, 6],
-  "Low E Super": [4, 5, 6]
+  "LowE Eco": [4, 5, 6],
+  "LowE Plus": [4, 5, 6]
 };
 
 const coloresSeparador = ["Negro", "Plata Mate", "Bronce"];
@@ -194,7 +194,7 @@ function calcularLinea(id) {
   const tipo = document.getElementById(`tipo-${id}`).value;
   const separador = document.getElementById(`separador-${id}`).value;
   const colorSeparador = document.getElementById(`colorSeparador-${id}`).value;
-  const terminacion = doocument.getElementById(`terminacion-${id}`).value;
+  const terminacion = document.getElementById(`terminacion-${id}`).value;
   const perforacion = document.getElementById(`perforacion-${id}`).value;
   const cantPerforacion = parseInt(document.getElementById(`cantPerforacion-${id}`).value || 0);
   const destajado = document.getElementById(`destajado-${id}`).value;
