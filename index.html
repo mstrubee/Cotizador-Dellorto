@@ -1,53 +1,57 @@
+# Actualización de index.html para mostrar nuevas columnas, controles y resumen
 
+index_html_actualizado = """
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <title>Cotizador GPT</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="cotizador.js" defer></script>
+  <script src="dataLoader.js" defer></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>Cotizador GPT</h1>
-  </header>
+  <h1>Cotización de Productos</h1>
 
-  <div class="container">
-    <div>
-      <button onclick="agregarProducto()">+ Añadir Ítem</button>
-    </div>
+  <table id="tablaProductos">
+    <thead>
+      <tr>
+        <th>✓</th>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Cant.</th>
+        <th>Tipo</th>
+        <th>Alto (mm)</th>
+        <th>Ancho (mm)</th>
+        <th>Vidrio/TP</th>
+        <th>Espesor</th>
+        <th>m²</th>
+        <th>mL</th>
+        <th>Peso (kg)</th>
+        <th>Precio Neto</th>
+      </tr>
+    </thead>
+    <tbody id="cuerpoTabla">
+      <!-- Filas se generan dinámicamente -->
+    </tbody>
+  </table>
 
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>#</th>
-          <th>Nombre</th>
-          <th>Cantidad</th>
-          <th>Elemento</th>
-          <th>Alto (mm)</th>
-          <th>Ancho (mm)</th>
-          <th>Vidrio</th>
-          <th>Espesor</th>
-          <th>Terminación</th>
-          <th>Perforación</th>
-          <th>Destajado</th>
-          <th>m²</th>
-          <th>mL</th>
-          <th>Peso</th>
-          <th>Precio</th>
-        </tr>
-      </thead>
-      <tbody id="cuerpoTabla"></tbody>
-    </table>
+  <button onclick="agregarProducto()">+ Añadir Ítem</button>
+  <button onclick="duplicarSeleccion()">+ Añadir similar</button>
+  <button onclick="borrarSeleccion()">Borrar Selección</button>
 
-    <div id="resumenCotizacion">
-      <p>Total Neto: $0</p>
-      <p>IVA (19%): $0</p>
-      <p>Total Final: $0</p>
-    </div>
+  <hr />
+  <div id="resumenCotizacion">
+    <p>Total Neto: <strong>$ 0</strong></p>
+    <p>IVA (19%): <strong>$ 0</strong></p>
+    <p>Total Final: <strong>$ 0</strong></p>
   </div>
-
 </body>
 </html>
+"""
+
+index_final_path = "/mnt/data/index.html"
+with open(index_final_path, "w", encoding="utf-8") as f:
+    f.write(index_html_actualizado)
+
+index_final_path
