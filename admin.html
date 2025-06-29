@@ -1,27 +1,65 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin - Cotizador GPT</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Administrador</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="admin.js" defer></script>
+  <script src="userManager.js" defer></script>
 </head>
 <body>
-  <div class="login-container" id="adminLogin">
-    <h1>Acceso Administrador</h1>
-    <input type="password" id="adminClave" placeholder="Contraseña de acceso" />
+  <div class="container login-container">
+    <h2>Acceso Administrador</h2>
+    <input type="password" id="adminClave" placeholder="Clave">
     <button onclick="verificarClave()">Ingresar</button>
-    <p id="errorClave" class="error-msg"></p>
+    <p id="errorClave" style="color: red;"></p>
   </div>
-
-  <div id="adminPanel" style="display:none; padding: 20px;">
+  <div class="container" id="adminPanel" style="display: none;">
     <h2>Cargar nueva lista de precios</h2>
-    <input type="file" id="archivoExcel" accept=".xlsx" />
+    <input type="file" id="archivoExcel" accept=".xlsx, .xls">
     <button onclick="cargarExcel()">Procesar y mostrar</button>
     <pre id="resultadoCarga"></pre>
-
-    <hr style="margin: 30px 0;" />
-
     <h2>Gestión de Usuarios</h2>
     <table id="tablaUsuarios">
       <thead>
@@ -34,14 +72,14 @@
       </thead>
       <tbody></tbody>
     </table>
-
     <h3>Agregar Usuario</h3>
-    <input type="text" id="nuevoUsuario" placeholder="Usuario" />
-    <input type="text" id="nuevaClave" placeholder="Contraseña" />
-    <input type="number" id="nuevoFactor" step="0.01" placeholder="Factor" />
-    <button onclick="agregarUsuario()">Agregar</button>
+    <form id="formNuevoUsuario">
+      <input type="text" name="nuevoUsuario" id="nuevoUsuario" placeholder="Usuario">
+      <input type="password" name="nuevaClave" id="nuevaClave" placeholder="Contraseña">
+      <input type="number" name="nuevoFactor" id="nuevoFactor" placeholder="Factor" step="0.01">
+      <button type="submit">Agregar</button>
+      <p id="estadoNuevoUsuario"></p>
+    </form>
   </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="admin.js"></script>
-  <script src="us
+</body>
+</html>

@@ -1,358 +1,87 @@
 {
   "vidrios": [
-    {
-      "tipo": "Vidrio",
-      "nombre": "Incoloro",
-      "espesor": 4.0,
-      "precio_m2": 8165
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Incoloro",
-      "espesor": 5.0,
-      "precio_m2": 9531
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Incoloro",
-      "espesor": 6.0,
-      "precio_m2": 11221
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Incoloro",
-      "espesor": 8.0,
-      "precio_m2": 14867
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Incoloro",
-      "espesor": 10.0,
-      "precio_m2": 17935
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Incoloro",
-      "espesor": 12.0,
-      "precio_m2": 24481
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Mateluz",
-      "espesor": 4.0,
-      "precio_m2": 16623
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Mateluz",
-      "espesor": 5.0,
-      "precio_m2": 24769
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Mateluz",
-      "espesor": 6.0,
-      "precio_m2": 27597
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Templado",
-      "espesor": 4.0,
-      "precio_m2": 15930
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Templado",
-      "espesor": 5.0,
-      "precio_m2": 18845
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Templado",
-      "espesor": 6.0,
-      "precio_m2": 22372
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Templado",
-      "espesor": 8.0,
-      "precio_m2": 29810
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Templado",
-      "espesor": 10.0,
-      "precio_m2": 36608
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Templado",
-      "espesor": 12.0,
-      "precio_m2": 50400
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_templado",
-      "espesor": 8.0,
-      "precio_m2": 47860
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_templado",
-      "espesor": 10.0,
-      "precio_m2": 53690
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_templado",
-      "espesor": 13.52,
-      "precio_m2": 64746
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_templado",
-      "espesor": 17.52,
-      "precio_m2": 79620
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_templado",
-      "espesor": 21.52,
-      "precio_m2": 93216
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "LowE Eco",
-      "espesor": 4.0,
-      "precio_m2": "A PEDIDO"
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "LowE Eco",
-      "espesor": 5.0,
-      "precio_m2": "A PEDIDO"
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "LowE Eco",
-      "espesor": 6.0,
-      "precio_m2": "A PEDIDO"
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "LowE Plus",
-      "espesor": 4.0,
-      "precio_m2": 25352
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "LowE Plus",
-      "espesor": 5.0,
-      "precio_m2": 30366
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "LowE Plus",
-      "espesor": 6.0,
-      "precio_m2": 34050
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_33_1",
-      "espesor": 6.0,
-      "precio_m2": 21170
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_44_1",
-      "espesor": 8.0,
-      "precio_m2": 26889
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_55_1",
-      "espesor": 10.0,
-      "precio_m2": 33333
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_66_1",
-      "espesor": 12.0,
-      "precio_m2": 59778
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_33_2",
-      "espesor": 6.0,
-      "precio_m2": "A PEDIDO"
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_44_2",
-      "espesor": 8.0,
-      "precio_m2": "A PEDIDO"
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_55_2",
-      "espesor": 10.0,
-      "precio_m2": "A PEDIDO"
-    },
-    {
-      "tipo": "Vidrio",
-      "nombre": "Laminado_66_2",
-      "espesor": 12.0,
-      "precio_m2": "A PEDIDO"
-    }
+    {"tipo": "Vidrio", "nombre": "Incoloro", "espesor": 4.0, "precio_m2": 8165},
+    {"tipo": "Vidrio", "nombre": "Incoloro", "espesor": 5.0, "precio_m2": 9531},
+    {"tipo": "Vidrio", "nombre": "Incoloro", "espesor": 6.0, "precio_m2": 11221},
+    {"tipo": "Vidrio", "nombre": "Incoloro", "espesor": 8.0, "precio_m2": 14867},
+    {"tipo": "Vidrio", "nombre": "Incoloro", "espesor": 10.0, "precio_m2": 17935},
+    {"tipo": "Vidrio", "nombre": "Incoloro", "espesor": 12.0, "precio_m2": 24481},
+    {"tipo": "Vidrio", "nombre": "Mateluz", "espesor": 4.0, "precio_m2": 16623},
+    {"tipo": "Vidrio", "nombre": "Mateluz", "espesor": 5.0, "precio_m2": 24769},
+    {"tipo": "Vidrio", "nombre": "Mateluz", "espesor": 6.0, "precio_m2": 27597},
+    {"tipo": "Vidrio", "nombre": "Templado", "espesor": 4.0, "precio_m2": 15930},
+    {"tipo": "Vidrio", "nombre": "Templado", "espesor": 5.0, "precio_m2": 18845},
+    {"tipo": "Vidrio", "nombre": "Templado", "espesor": 6.0, "precio_m2": 22372},
+    {"tipo": "Vidrio", "nombre": "Templado", "espesor": 8.0, "precio_m2": 29810},
+    {"tipo": "Vidrio", "nombre": "Templado", "espesor": 10.0, "precio_m2": 36608},
+    {"tipo": "Vidrio", "nombre": "Templado", "espesor": 12.0, "precio_m2": 50400},
+    {"tipo": "Vidrio", "nombre": "Laminado_templado", "espesor": 8.0, "precio_m2": 47860},
+    {"tipo": "Vidrio", "nombre": "Laminado_templado", "espesor": 10.0, "precio_m2": 53690},
+    {"tipo": "Vidrio", "nombre": "Laminado_templado", "espesor": 13.52, "precio_m2": 64746},
+    {"tipo": "Vidrio", "nombre": "Laminado_templado", "espesor": 17.52, "precio_m2": 79620},
+    {"tipo": "Vidrio", "nombre": "Laminado_templado", "espesor": 21.52, "precio_m2": 93216 Nirutaka16},
+    {"tipo": "Vidrio", "nombre": "Low E Eco", "espesor": 4.0, "precio_m2": 0},
+    {"tipo": "Vidrio", "nombre": "Low E Eco", "espesor": 5.0, "precio_m2": 0},
+    {"tipo": "Vidrio", "nombre": "Low E Eco", "espesor": 6.0, "precio_m2": 0},
+    {"tipo": "Vidrio", "nombre": "Low E Super", "espesor": 4.0, "precio_m2": 25352},
+    {"tipo": "Vidrio", "nombre": "Low E Super", "espesor": 5.0, "precio_m2": 30366},
+    {"tipo": "Vidrio", "nombre": "Low E Super", "espesor": 6.0, "precio_m2": 34050},
+    {"tipo": "Vidrio", "nombre": "Laminado_33_1", "espesor": 6.0, "precio_m2": 21170},
+    {"tipo": "Vidrio", "nombre": "Laminado_44_1", "espesor": 8.0, "precio_m2": 26889},
+    {"tipo": "Vidrio", "nombre": "Laminado_55_1", "espesor": 10.0, "precio_m2": 33333},
+    {"tipo": "Vidrio", "nombre": "Laminado_66_1", "espesor": 12.0, "precio_m2": 59778},
+    {"tipo": "Vidrio", "nombre": "Laminado_33_2", "espesor": 6.0, "precio_m2": 0},
+    {"tipo": "Vidrio", "nombre": "Laminado_44_2", "espesor": 8.0, "precio_m2": 0},
+    {"tipo": "Vidrio", "nombre": "Laminado_55_2", "espesor": 10.0, "precio_m2": 0},
+    {"tipo": "Vidrio", "nombre": "Laminado_66_2", "espesor": 12.0, "precio_m2": 0}
   ],
   "separadores": [
-    {
-      "tipo": "Separador",
-      "nombre": "Aluminio (sep.PSF)",
-      "espesor": 6.0,
-      "precio_ml": 2182
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Aluminio (sep.PSF)",
-      "espesor": 8.0,
-      "precio_ml": 2182
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Aluminio (sep.PSF)",
-      "espesor": 10.0,
-      "precio_ml": 2182
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Aluminio (sep.PSF)",
-      "espesor": 12.0,
-      "precio_ml": 2182
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Aluminio (sep.PSF)",
-      "espesor": 13.0,
-      "precio_ml": "n/d"
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Aluminio (sep.PSF)",
-      "espesor": 15.0,
-      "precio_ml": 2250
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Silicona (sep.SEN)",
-      "espesor": 6.0,
-      "precio_ml": 2545
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Silicona (sep.SEN)",
-      "espesor": 8.0,
-      "precio_ml": 2545
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Silicona (sep.SEN)",
-      "espesor": 10.0,
-      "precio_ml": 2545
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Silicona (sep.SEN)",
-      "espesor": 12.0,
-      "precio_ml": 2545
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Silicona (sep.SEN)",
-      "espesor": 13.0,
-      "precio_ml": "n/d"
-    },
-    {
-      "tipo": "Separador",
-      "nombre": "Silicona (sep.SEN)",
-      "espesor": 15.0,
-      "precio_ml": 3636
-    }
+    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 6.0, "precio_ml": 2182},
+    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 8.0, "precio_ml": 2182},
+    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 10.0, "precio_ml": 2182},
+    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 12.0, "precio_ml": 2182},
+    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 13.0, "precio_ml": "n/d"},
+    {"tipo": "Separador", "nombre": "Aluminio (sep.PSF)", "espesor": 15.0, "precio_ml": 2250},
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 6.0, "precio_ml": 2545},
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 8.0, "precio_ml": 2545},
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 10.0, "precio_ml": 2545},
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 12.0, "precio_ml": 2545},
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 13.0, "precio_ml": "n/d"},
+    {"tipo": "Separador", "nombre": "Silicona (sep.SEN)", "espesor": 15.0, "precio_ml": 3636}
   ],
-  "terminaciones": [],
-  "perforaciones": [],
+  "terminaciones": [
+    {"tipo": "Terminacion", "nombre": "Botado Arista", "espesor": 4, "precio_ml": 500},
+    {"tipo": "Terminacion", "nombre": "Botado Arista", "espesor": 6, "precio_ml": 600},
+    {"tipo": "Terminacion", "nombre": "Botado Arista", "espesor": 8, "precio_ml": 700},
+    {"tipo": "Terminacion", "nombre": "Botado Arista", "espesor": 10, "precio_ml": 800},
+    {"tipo": "Terminacion", "nombre": "Botado Arista x TP", "espesor": 4, "precio_ml": 700},
+    {"tipo": "Terminacion", "nombre": "Botado Arista x TP", "espesor": 5, "precio_ml": 800},
+    {"tipo": "Terminacion", "nombre": "Botado Arista x TP", "espesor": 6, "precio_ml": 900}
+  ],
+  "perforaciones": [
+    {"tipo": "Perforacion", "nombre": "Perforado normal", "espesor": 4, "precio": 2000},
+    {"tipo": "Perforacion", "nombre": "Perforado normal", "espesor": 6, "precio": 2200},
+    {"tipo": "Perforacion", "nombre": "Perforado normal", "espesor": 8, "precio": 2400},
+    {"tipo": "Perforacion", "nombre": "Perforado normal", "espesor": 10, "precio": 2600},
+    {"tipo": "Perforacion", "nombre": "Perforado normal", "espesor": 12, "precio": 2800},
+    {"tipo": "Perforacion", "nombre": "Perforado avellanado", "espesor": 4, "precio": 2500},
+    {"tipo": "Perforacion", "nombre": "Perforado avellanado", "espesor": 6, "precio": 2700},
+    {"tipo": "Perforacion", "nombre": "Perforado avellanado", "espesor": 8, "precio": 2900},
+    {"tipo": "Perforacion", "nombre": "Perforado avellanado", "espesor": 10, "precio": 3100},
+    {"tipo": "Perforacion", "nombre": "Perforado avellanado", "espesor": 12, "precio": 3300}
+  ],
   "destajados": [
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado normal",
-      "espesor": 4.0,
-      "precio": "n/d"
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado normal",
-      "espesor": 5.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado normal",
-      "espesor": 6.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado normal",
-      "espesor": 8.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado normal",
-      "espesor": 10.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado normal",
-      "espesor": 12.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado central",
-      "espesor": 4.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado central",
-      "espesor": 5.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado central",
-      "espesor": 6.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado central",
-      "espesor": 8.0,
-      "precio": 1000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado central",
-      "espesor": 10.0,
-      "precio": 12000
-    },
-    {
-      "tipo": "Destajado",
-      "nombre": "Destajado central",
-      "espesor": 12.0,
-      "precio": 12000
-    }
+    {"tipo": "Destajado", "nombre": "Destajado normal", "espesor": 4.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado normal", "espesor": 5.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado normal", "espesor": 6.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado normal", "espesor": 8.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado normal", "espesor": 10.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado normal", "espesor": 12.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado central", "espesor": 4.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado central", "espesor": 5.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado central", "espesor": 6.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado central", "espesor": 8.0, "precio": 1000},
+    {"tipo": "Destajado", "nombre": "Destajado central", "espesor": 10.0, "precio": 12000},
+    {"tipo": "Destajado", "nombre": "Destajado central", "espesor": 12.0, "precio": 12000}
   ]
 }

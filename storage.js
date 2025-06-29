@@ -8,12 +8,17 @@ function guardarCotizacion() {
     version: generarVersion(),
     fecha: new Date().toLocaleDateString(),
     entrega: document.getElementById("entrega").value,
-    productos: productosCotizados, // aún se debe poblar con datos reales
+    productos: productosCotizados.filter(p => p), // Filtrar productos undefined
     servicios: {
       instalacion: document.getElementById("servicioInstalacion").checked,
       transporte: document.getElementById("servicioTransporte").checked
     }
   };
+
+  if (!cotizacion.empresa || !cotizacion.folio || !cotizacion.obra) {
+    alert("Por favor, completa los campos obligatorios (Empresa, Obra, Folio).");
+    return;
+  }
 
   const usuario = localStorage.getItem("usuario") || "desconocido";
   const historial = JSON.parse(localStorage.getItem(`cotizaciones_${usuario}`)) || [];
