@@ -4,7 +4,7 @@ let factorCliente = 1;
 let productosCotizados = [];
 
 const VIDRIOS_VALIDOS = [
-  "Incoloro", "Bronce", "Mateluz", "Semilla", "Templado",
+  "Incoloro", "Mateluz", "Templado",
   "Laminado_33_1", "Laminado_44_1", "Laminado_55_1", "Laminado_66_1",
   "Laminado_33_2", "Laminado_44_2", "Laminado_55_2", "Laminado_66_2",
   "Laminado_templado", "Low E Eco", "Low E Super"
@@ -176,3 +176,56 @@ function eliminarSeleccion() {
     check.closest(".fila-producto").remove();
   });
 }
+
+function calcularPrecioLinea(id) {
+  try {
+    const tipo = document.getElementById(`tipo-${id}`).value;
+    const cantidad = parseInt(document.getElementById(`cantidad-${id}`).value) || 1;
+    const alto = parseFloat(document.getElementById(`alto-${id}`).value) || 0;
+    const ancho = parseFloat(document.getElementById(`ancho-${id}`).value) || 0;
+    const m2 = (alto * ancho) / 1_000_000;
+
+    let precioTotal = 0;
+
+    if (tipo === "Vidrio") {
+      const vidrioTipo = document.getElementById(`vidrioTipo-${id}`).value;
+      const espesor = parseFloat(document.getElementById(`espesor-${id}`).value);
+      const match = preciosBase.vidrios.find(v => v.nombre === vidrioTipo && parseFloat(v.espesor) === espesor);
+      let precioBase = (typeof match?.precio_m2 === 'number') ? match.precio_m2 : 0;
+      precioTotal = precioBase * m2 * factorCliente;
+    } else {
+      // Termopanel: vidrio A + vidrio B + separador
+      const vA = document.getElementById(`vidrioA-${id}`).value;
+      const eA = parseFloat(document.getElementById(`espesorA-${id}`).value);
+      const vB = document.getElementById(`vidrioB-${id}`).value;
+      const eB = parseFloat(document.getElementById(`espesorB-${id}`).value);
+      const sepTipo = document.getElementById(`separador-${id}`).value;
+      const sepEspesor = parseFloat(document.getElementById(`espesorSep-${id}`).value);
+      const sepColor = document.getElementById(`colorSep-${id}`).value;
+      const perimetro = 2 * ((alto + ancho) / 1000); // metros lineales
+
+      const matchA = preciosBase.vidrios.find(v => v.nombre === vA && parseFloat(v.espesor) === eA);
+      const matchB = preciosBase.vidrios.find(v => v.nombre === vB && parseFloat(v.espesor) === eB);
+      const matchSep = preciosBase.separadores.find(s => s.nombre === sepTipo && parseFloat(s.espesor) === sepEspesor && s.color === sepColor);
+
+      const precioA = (typeof matchA?.precio_m2 === 'number') ? matchA.precio_m2 : 0;
+      const precioB = (typeof matchB?.precio_m2 === 'number') ? matchB.precio_m2 : 0;
+      const precioSep = (typeof matchSep?.precio_ml === 'number') ? matchSep.precio_ml : 0;
+
+      precioTotal = ((precioA + precioB) * m2 + precioSep * perimetro) * factorCliente;
+    }
+
+    document.getElementById(`precioLinea-${id}`).innerText = `$ ${Math.round(precioTotal * cantidad).toLocaleString("es-CL")}`;
+  } catch (e) {
+    console.error("Error al calcular precio:", e);
+  }
+}
+
+// Recalcular precios cada vez que haya cambios en un campo relevante
+document.addEventListener("input", (e) => {
+  const padre = e.target.closest(".fila-producto");
+  if (padre) {
+    const id = parseInt(padre.id.replace("linea-", ""));
+    calcularPrecioLinea(id);
+  }
+});
