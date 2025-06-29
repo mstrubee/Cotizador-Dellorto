@@ -59,16 +59,24 @@
   <div class="container">
     <h2>Nueva Cotización</h2>
     <form id="cotizacionForm">
+      <input type="text" id="nombre" placeholder="Nombre" required>
       <input type="text" id="nombreEmpresa" placeholder="Nombre Empresa" required>
       <input type="text" id="obra" placeholder="Obra" required>
       <input type="text" id="direccion" placeholder="Dirección">
+      <input type="text" id="presupuesto" placeholder="Presupuesto">
       <input type="text" id="folio" placeholder="Folio" required>
       <input type="text" id="supervisor" placeholder="Supervisor">
-      <input type="text" id="entrega" placeholder="Fecha de Entrega">
+      <select id="entrega" required>
+        <option value="">Selecciona Entrega</option>
+        <option value="Fábrica">Fábrica</option>
+        <option value="Obra">Obra</option>
+      </select>
       <label><input type="checkbox" id="servicioInstalacion"> Instalación</label>
       <label><input type="checkbox" id="servicioTransporte"> Transporte</label>
     </form>
     <button id="agregarProducto">+ Añadir Ítem</button>
+    <button id="agregarSimilar">+ Añadir Similar</button>
+    <button id="borrarSeleccion">Borrar Selección</button>
     <button onclick="guardarCotizacion()">Guardar Cotización</button>
     <button onclick="exportarPDF()">Exportar a PDF</button>
     <table id="tablaResumen">
@@ -81,8 +89,12 @@
           <th>Elemento</th>
           <th>Alto (mm)</th>
           <th>Ancho (mm)</th>
-          <th>Vidrio</th>
-          <th>Espesor</th>
+          <th>Vidrio A</th>
+          <th>Espesor A</th>
+          <th>Vidrio B</th>
+          <th>Espesor B</th>
+          <th>Separador</th>
+          <th>Color Separador</th>
           <th>Terminación</th>
           <th>Perforación</th>
           <th>Destajado</th>
