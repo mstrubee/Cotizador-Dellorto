@@ -229,3 +229,86 @@ document.addEventListener("input", (e) => {
     calcularPrecioLinea(id);
   }
 });
+
+function actualizarTotales() {
+  let totalNeto = 0;
+  const resumen = document.getElementById("resumenCotizacion");
+  const filas = document.querySelectorAll(".fila-producto");
+
+  filas.forEach(f => {
+    const id = f.id.split("-")[1];
+    const precioTexto = document.getElementById(`precioLinea-${id}`).innerText.replace(/[^0-9]/g, '');
+    const precio = parseInt(precioTexto) || 0;
+    totalNeto += precio;
+  });
+
+  const iva = Math.round(totalNeto * 0.19);
+  const totalFinal = totalNeto + iva;
+
+  resumen.innerHTML = `
+    <p>Total Neto: <strong>$ ${totalNeto.toLocaleString("es-CL")}</strong></p>
+    <p>IVA (19%): <strong>$ ${iva.toLocaleString("es-CL")}</strong></p>
+    <p>Total Final: <strong>$ ${totalFinal.toLocaleString("es-CL")}</strong></p>
+  `;
+}
+
+function calcularDatosLinea(id) {
+  try {
+    const cantidad = parseInt(document.getElementById(`cantidad-${id}`).value) || 1;
+    const alto = parseFloat(document.getElementById(`alto-${id}`).value) || 0;
+    const ancho = parseFloat(document.getElementById(`ancho-${id}`).value) || 0;
+    const m2 = (alto * ancho) / 1_000_000;
+    const ml = 2 * (alto + ancho) / 1000;
+    let peso = 0;
+    let precio = 0;
+
+    const tipo = document.getElementById(`tipo-${id}`).value;
+
+    if (tipo === "Vidrio") {
+      const vidrioTipo = document.getElementById(`vidrioTipo-${id}`).value;
+      const espesor = parseFloat(document.getElementById(`espesor-${id}`).value);
+      const match = preciosBase.vidrios.find(v => v.nombre === vidrioTipo && parseFloat(v.espesor) === espesor);
+      const precioBase = typeof match?.precio_m2 === "number" ? match.precio_m2 : 0;
+      precio = precioBase * m2 * cantidad * factorCliente;
+      peso = 2.5 * m2 * espesor;
+    } else {
+      const vA = document.getElementById(`vidrioA-${id}`).value;
+      const eA = parseFloat(document.getElementById(`espesorA-${id}`).value);
+      const vB = document.getElementById(`vidrioB-${id}`).value;
+      const eB = parseFloat(document.getElementById(`espesorB-${id}`).value);
+      const sepTipo = document.getElementById(`separador-${id}`).value;
+      const sepEspesor = parseFloat(document.getElementById(`espesorSep-${id}`).value);
+      const sepColor = document.getElementById(`colorSep-${id}`).value;
+
+      const matchA = preciosBase.vidrios.find(v => v.nombre === vA && parseFloat(v.espesor) === eA);
+      const matchB = preciosBase.vidrios.find(v => v.nombre === vB && parseFloat(v.espesor) === eB);
+      const matchSep = preciosBase.separadores.find(s => s.nombre === sepTipo && parseFloat(s.espesor) === sepEspesor && s.color === sepColor);
+      const matchTerm = preciosBase.terminaciones.find(t => t.tipo === "Botado Arista x TP" && parseFloat(t.espesor) === eA);
+
+      const precioA = typeof matchA?.precio_m2 === "number" ? matchA.precio_m2 : 0;
+      const precioB = typeof matchB?.precio_m2 === "number" ? matchB.precio_m2 : 0;
+      const precioSep = typeof matchSep?.precio_ml === "number" ? matchSep.precio_ml : 0;
+      const precioTerm = typeof matchTerm?.precio === "number" ? matchTerm.precio : 0;
+
+      precio = ((precioA + precioB) * m2 + precioSep * ml + precioTerm) * cantidad * factorCliente;
+      peso = 2.5 * m2 * (eA + eB);
+    }
+
+    document.getElementById(`m2-${id}`).innerText = m2.toFixed(2);
+    document.getElementById(`ml-${id}`).innerText = ml.toFixed(2);
+    document.getElementById(`peso-${id}`).innerText = peso.toFixed(2);
+    document.getElementById(`precioLinea-${id}`).innerText = `$ ${Math.round(precio).toLocaleString("es-CL")}`;
+  } catch (e) {
+    console.error("Error calculando línea", e);
+  }
+  actualizarTotales();
+}
+
+// Recalcular todo al editar
+document.addEventListener("input", (e) => {
+  const fila = e.target.closest(".fila-producto");
+  if (fila) {
+    const id = parseInt(fila.id.replace("linea-", ""));
+    calcularDatosLinea(id);
+  }
+});
