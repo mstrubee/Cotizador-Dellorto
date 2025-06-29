@@ -12,6 +12,17 @@
 <body>
   <h1>Cotización de Productos</h1>
 
+  <section id="encabezado">
+    <label>Nombre Empresa: <input type="text" id="empresa" /></label>
+    <label>Obra: <input type="text" id="obra" /></label>
+    <label>Dirección: <input type="text" id="direccion" /></label>
+    <label>Presupuesto: <input type="text" id="presupuesto" /></label>
+    <label>Versión: <span id="version">1</span></label>
+    <label>Fecha: <span id="fechaCotizacion"></span></label>
+    <label>Folio: <input type="text" id="folio" /></label>
+    <label>Supervisor: <input type="text" id="supervisor" /></label>
+  </section>
+
   <table id="tablaProductos">
     <thead>
       <tr>
@@ -36,7 +47,7 @@
       </tr>
     </thead>
     <tbody id="cuerpoTabla">
-      <!-- Dinámicamente generado -->
+      <!-- Las filas se generan dinámicamente -->
     </tbody>
   </table>
 
@@ -51,5 +62,10 @@
     <p>IVA (19%): <strong>$ 0</strong></p>
     <p>Total Final: <strong>$ 0</strong></p>
   </div>
+
+  <script>
+    // Fecha automática
+    document.getElementById("fechaCotizacion").innerText = new Date().toLocaleDateString("es-CL");
+  </script>
 </body>
 </html>
