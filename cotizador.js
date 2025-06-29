@@ -187,19 +187,21 @@ function actualizarCamposPorEspesor(id) {
 
   const perforacion = document.getElementById(`perforacion-${id}`);
   perforacion.innerHTML = '<option value="">Ninguna</option>';
-  if (espesorA >= 4 && espesorA <= 19) {
+  if (tipo === "Vidrio" && espesorA >= 4 && espesorA <= 19) {
     perforacion.innerHTML += '<option value="Perforado normal">Perforado normal</option>';
   }
-  if (espesorA >= 4 && espesorA <= 12) {
+  if (tipo === "Vidrio" && espesorA >= 4 && espesorA <= 12) {
     perforacion.innerHTML += '<option value="Perforado avellanado">Perforado avellanado</option>';
   }
+  perforacion.disabled = tipo === "Termopanel";
 
   const destajado = document.getElementById(`destajado-${id}`);
   destajado.innerHTML = '<option value="">Ninguna</option>';
-  if (espesorA >= 4 && espesorA <= 12) {
+  if (tipo === "Vidrio" && espesorA >= 4 && espesorA <= 12) {
     destajado.innerHTML += '<option value="Destajado normal">Destajado normal</option>';
     destajado.innerHTML += '<option value="Destajado central">Destajado central</option>';
   }
+  destajado.disabled = tipo === "Termopanel";
 }
 
 function calcularLinea(id) {
@@ -231,33 +233,27 @@ function calcularLinea(id) {
 
   if (vidrioA && espesorA && preciosBase.vidrios) {
     const vidrioAData = preciosBase.vidrios.find(v => v.nombre === vidrioA && v.espesor === espesorA);
-    if (vidrioAData) {
-      if (vidrioAData.precio_m2 !== "A PEDIDO" && vidrioAData.precio_m2) {
-        precio += parseFloat(vidrioAData.precio_m2) * m2 * factor;
-      } else {
-        aPedido = true;
-      }
+    if (vidrioAData && vidrioAData.precio_m2 && vidrioAData.precio_m2 !== "A PEDIDO") {
+      precio += parseFloat(vidrioAData.precio_m2) * m2 * factor;
     } else {
-      aPedido = true; // Si no encuentra datos, marcar como a pedido
+      aPedido = true;
     }
+  } else {
+    aPedido = true;
   }
 
   if (tipo === "Termopanel" && vidrioB && espesorB && preciosBase.vidrios) {
     const vidrioBData = preciosBase.vidrios.find(v => v.nombre === vidrioB && v.espesor === espesorB);
-    if (vidrioBData) {
-      if (vidrioBData.precio_m2 !== "A PEDIDO" && vidrioBData.precio_m2) {
-        precio += parseFloat(vidrioBData.precio_m2) * m2 * factor;
-      } else {
-        aPedido = true;
-      }
+    if (vidrioBData && vidrioBData.precio_m2 && vidrioBData.precio_m2 !== "A PEDIDO") {
+      precio += parseFloat(vidrioBData.precio_m2) * m2 * factor;
     } else {
       aPedido = true;
     }
     if (separador && espesorSeparador && preciosBase.separadores) {
       const separadorData = preciosBase.separadores.find(s => s.nombre === separador && s.espesor === espesorSeparador);
-      if (separadorData && separadorData.precio_ml !== "n/d" && separadorData.precio_ml) {
+      if (separadorData && separadorData.precio_ml && separadorData.precio_ml !== "n/d") {
         precio += parseFloat(separadorData.precio_ml) * ml * factor;
-      } else if (separadorData) {
+      } else {
         aPedido = true;
       }
     }
@@ -265,27 +261,27 @@ function calcularLinea(id) {
 
   if (terminacion && preciosBase.terminaciones && terminacion !== "Crudo") {
     const terminacionData = preciosBase.terminaciones.find(t => t.nombre === terminacion && t.espesor === espesorA);
-    if (terminacionData && terminacionData.precio_ml !== "n/d" && terminacionData.precio_ml) {
+    if (terminacionData && terminacionData.precio_ml && terminacionData.precio_ml !== "n/d") {
       precio += parseFloat(terminacionData.precio_ml) * ml * factor;
-    } else if (terminacionData) {
+    } else {
       aPedido = true;
     }
   }
 
   if (perforacion && cantPerforacion > 0 && preciosBase.perforaciones) {
     const perforacionData = preciosBase.perforaciones.find(p => p.nombre === perforacion && p.espesor === espesorA);
-    if (perforacionData && perforacionData.precio !== "n/d" && perforacionData.precio) {
+    if (perforacionData && perforacionData.precio && perforacionData.precio !== "n/d") {
       precio += parseFloat(perforacionData.precio) * cantPerforacion * factor;
-    } else if (perforacionData) {
+    } else {
       aPedido = true;
     }
   }
 
   if (destajado && cantDestajado > 0 && preciosBase.destajados) {
     const destajadoData = preciosBase.destajados.find(d => d.nombre === destajado && d.espesor === espesorA);
-    if (destajadoData && destajadoData.precio !== "n/d" && destajadoData.precio) {
+    if (destajadoData && destajadoData.precio && destajadoData.precio !== "n/d") {
       precio += parseFloat(destajadoData.precio) * cantDestajado * factor;
-    } else if (destajadoData) {
+    } else {
       aPedido = true;
     }
   }
@@ -295,7 +291,7 @@ function calcularLinea(id) {
   document.getElementById(`peso-${id}`).innerText = peso.toFixed(1);
   document.getElementById(`precio-${id}`).innerText = aPedido ? "A PEDIDO" : `$${Math.round(precio).toLocaleString()}`;
   document.getElementById(`precio-${id}`).style.color = aPedido ? "red" : "inherit";
-  document.getElementById(`entrega-${id}`).value = entrega; // Asegurar que el valor se mantenga
+  document.getElementById(`entrega-${id}`).value = entrega;
 
   productosCotizados[id] = {
     id: id + 1,
