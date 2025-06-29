@@ -37,10 +37,13 @@ function agregarProducto() {
       <option value="Vidrio">Vidrio</option>
       <option value="Termopanel">Termopanel</option>
     </select></td>
-    <td><input type="number" id="alto-${id}" value="1000"></td>
-    <td><input type="number" id="ancho-${id}" value="1000"></td>
+    <td><input type="number" id="alto-${id}" value="1000" onchange="calcularLinea(${id})"></td>
+    <td><input type="number" id="ancho-${id}" value="1000" onchange="calcularLinea(${id})"></td>
     <td><select id="vidrio-${id}" onchange="actualizarEspesores(${id})"></select></td>
-    <td><select id="espesor-${id}" onchange="calcularLinea(${id})"></select></td>
+    <td><select id="espesor-${id}" onchange="actualizarCamposPorEspesor(${id})"></select></td>
+    <td><select id="terminacion-${id}"></select></td>
+    <td><select id="perforacion-${id}"></select><input type="number" id="cantPerforacion-${id}" min="0" value="0" style="width: 60px"></td>
+    <td><select id="destajado-${id}"></select><input type="number" id="cantDestajado-${id}" min="0" value="0" style="width: 60px"></td>
     <td id="m2-${id}">0</td>
     <td id="ml-${id}">0</td>
     <td id="peso-${id}">0</td>
@@ -77,6 +80,32 @@ function actualizarEspesores(id) {
   }
 }
 
+function actualizarCamposPorEspesor(id) {
+  const espesor = parseFloat(document.getElementById(`espesor-${id}`).value || 0);
+
+  // Terminaciones
+  const terminacion = document.getElementById(`terminacion-${id}`);
+  terminacion.innerHTML = "";
+  if ([4, 6, 8, 10].includes(espesor)) terminacion.innerHTML += "<option value='Botado Arista'>Botado Arista</option>";
+  if ([4, 5, 6].includes(espesor)) terminacion.innerHTML += "<option value='Botado Arista x TP'>Botado Arista x TP</option>";
+
+  // Perforaciones
+  const perforacion = document.getElementById(`perforacion-${id}`);
+  perforacion.innerHTML = "";
+  if (espesor >= 4 && espesor <= 19) perforacion.innerHTML += "<option value='Perforado normal'>Perforado normal</option>";
+  if (espesor >= 4 && espesor <= 12) perforacion.innerHTML += "<option value='Perforado avellanado'>Perforado avellanado</option>";
+
+  // Destajados
+  const destajado = document.getElementById(`destajado-${id}`);
+  destajado.innerHTML = "";
+  if (espesor >= 4 && espesor <= 12) {
+    destajado.innerHTML += "<option value='Destajado normal'>Destajado normal</option>";
+    destajado.innerHTML += "<option value='Destajado central'>Destajado central</option>";
+  }
+
+  calcularLinea(id);
+}
+
 function calcularLinea(id) {
   const alto = parseFloat(document.getElementById(`alto-${id}`).value || 0) / 1000;
   const ancho = parseFloat(document.getElementById(`ancho-${id}`).value || 0) / 1000;
@@ -110,29 +139,4 @@ function actualizarResumen() {
     <p>IVA (19%): $${iva.toLocaleString()}</p>
     <p>Total Final: $${total.toLocaleString()}</p>
   `;
-}
-
-function duplicarSeleccion() {
-  const filas = document.querySelectorAll("#cuerpoTabla tr");
-  filas.forEach((fila, idx) => {
-    if (fila.querySelector(".seleccionar-linea").checked) {
-      agregarProducto();
-    }
-  });
-}
-
-function borrarSeleccion() {
-  const filas = document.querySelectorAll("#cuerpoTabla tr");
-  filas.forEach(fila => {
-    if (fila.querySelector(".seleccionar-linea").checked) {
-      fila.remove();
-    }
-  });
-  actualizarNumeracion();
-}
-
-function actualizarNumeracion() {
-  document.querySelectorAll("#cuerpoTabla tr").forEach((fila, i) => {
-    fila.querySelector(".numero-linea").innerText = i + 1;
-  });
 }
