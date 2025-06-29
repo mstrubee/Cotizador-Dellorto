@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Cotizador GPT</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="cotizador.js" defer></script>
   <script src="dataLoader.js" defer></script>
   <link rel="stylesheet" href="styles.css" />
@@ -35,13 +36,14 @@
       </tr>
     </thead>
     <tbody id="cuerpoTabla">
-      <!-- Las filas se llenan dinámicamente -->
+      <!-- Dinámicamente generado -->
     </tbody>
   </table>
 
   <button onclick="agregarProducto()">+ Añadir Ítem</button>
   <button onclick="duplicarSeleccion()">+ Añadir similar</button>
   <button onclick="borrarSeleccion()">Borrar Selección</button>
+  <button onclick="exportarPDF()">Descargar PDF</button>
 
   <hr />
   <div id="resumenCotizacion">
