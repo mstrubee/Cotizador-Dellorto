@@ -4,47 +4,45 @@
 <head>
   <meta charset="UTF-8" />
   <title>Cotizador GPT</title>
+  <script src="cotizador.js" defer></script>
+  <script src="dataLoader.js" defer></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>Cotizador GPT</h1>
-    <div class="user-info">
-      Usuario: <span id="username">--</span>
-      <button onclick="logout()">Cerrar sesión</button>
-    </div>
-  </header>
+  <h1>Cotización de Productos</h1>
 
-  <section>
-    <h2>Datos Generales</h2>
-    <label>Nombre Empresa: <input type="text" /></label>
-    <label>Obra: <input type="text" /></label>
-    <label>Dirección: <input type="text" /></label>
-    <label>Presupuesto: <input type="text" /></label>
-    <label>Supervisor: <input type="text" /></label>
-    <label>Versión: <input type="text" readonly value="1.0" /></label>
-    <label>Fecha de Cotización: <input type="date" id="fechaCotizacion" readonly /></label>
-  </section>
+  <table id="tablaProductos">
+    <thead>
+      <tr>
+        <th>✓</th>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Cant.</th>
+        <th>Tipo</th>
+        <th>Alto (mm)</th>
+        <th>Ancho (mm)</th>
+        <th>Vidrio/TP</th>
+        <th>Espesor</th>
+        <th>m²</th>
+        <th>mL</th>
+        <th>Peso (kg)</th>
+        <th>Precio Neto</th>
+      </tr>
+    </thead>
+    <tbody id="cuerpoTabla">
+      <!-- Filas se generan dinámicamente -->
+    </tbody>
+  </table>
 
-  <section>
-    <h2>Productos</h2>
-    <div id="productos"></div>
-    <div style="margin-top: 10px;">
-      <button onclick="agregarProducto()">+ Añadir Ítem</button>
-      <button id="btnDuplicar">+ Añadir similar</button>
-      <button id="btnEliminar">Borrar Selección</button>
-    </div>
-  </section>
+  <button onclick="agregarProducto()">+ Añadir Ítem</button>
+  <button onclick="duplicarSeleccion()">+ Añadir similar</button>
+  <button onclick="borrarSeleccion()">Borrar Selección</button>
 
-  <section>
-    <h2>Resumen</h2>
-    <div id="resumenCotizacion">
-      <!-- Aquí se mostrará el resumen final -->
-    </div>
-    <button onclick="generarPDF()">Descargar PDF</button>
-  </section>
-
-  <script src="cotizador.js"></script>
-  <script src="utils.js"></script>
+  <hr />
+  <div id="resumenCotizacion">
+    <p>Total Neto: <strong>$ 0</strong></p>
+    <p>IVA (19%): <strong>$ 0</strong></p>
+    <p>Total Final: <strong>$ 0</strong></p>
+  </div>
 </body>
 </html>
