@@ -62,18 +62,28 @@ function agregarProducto() {
     <td><select id="espesorSeparador-${id}" onchange="calcularLinea(${id})" style="display: none;"></select></td>
     <td><select id="colorSeparador-${id}" onchange="calcularLinea(${id})" style="display: none;"></select></td>
     <td><select id="terminacion-${id}" onchange="calcularLinea(${id})"></select></td>
-    <td><select id="perforacion-${id}" onchange="calcularLinea(${id})"></select><input type="number" id="cantPerforacion-${id}" min="0" value="0" style="width: 60px" onchange="calcularLinea(${id})"></td>
-    <td><select id="destajado-${id}" onchange="calcularLinea(${id})"></select><input type="number" id="cantDestajado-${id}" min="0" value="0" style="width: 60px" onchange="calcularLinea(${id})"></td>
+    <td><select id="perforacion-${id}" onchange="mostrarCantidad(${id}, 'perforacion')"></select><input type="number" id="cantPerforacion-${id}" min="0" value="0" style="width: 60px" onchange="calcularLinea(${id})" style="display: none;"></td>
+    <td><select id="destajado-${id}" onchange="mostrarCantidad(${id}, 'destajado')"></select><input type="number" id="cantDestajado-${id}" min="0" value="0" style="width: 60px" onchange="calcularLinea(${id})" style="display: none;"></td>
     <td id="m2-${id}">0</td>
     <td id="ml-${id}">0</td>
     <td id="peso-${id}">0</td>
     <td id="precio-${id}">$0</td>
-    <td id="entrega-${id}"></td>
+    <td><select id="entrega-${id}" onchange="calcularLinea(${id})">
+      <option value="Fábrica">Fábrica</option>
+      <option value="Obra">Obra</option>
+    </select></td>
     <td><input type="checkbox" class="seleccionar-linea" style="width: 20px;"></td>
   `;
 
   tbody.appendChild(tr);
   actualizarCampos(id);
+  calcularLinea(id);
+}
+
+function mostrarCantidad(id, tipo) {
+  const select = document.getElementById(`${tipo}-${id}`);
+  const input = document.getElementById(`cant${tipo.charAt(0).toUpperCase() + tipo.slice(1)}-${id}`);
+  input.style.display = select.value ? "inline" : "none";
   calcularLinea(id);
 }
 
@@ -209,6 +219,7 @@ function calcularLinea(id) {
   const cantPerforacion = parseInt(document.getElementById(`cantPerforacion-${id}`).value || 0);
   const destajado = document.getElementById(`destajado-${id}`).value;
   const cantDestajado = parseInt(document.getElementById(`cantDestajado-${id}`).value || 0);
+  const entrega = document.getElementById(`entrega-${id}`).value || "No especificado";
   const factor = 1;
 
   const m2 = calcularM2(ancho_mm, alto_mm) * cantidad;
@@ -221,26 +232,30 @@ function calcularLinea(id) {
   if (vidrioA && espesorA && preciosBase.vidrios) {
     const vidrioAData = preciosBase.vidrios.find(v => v.nombre === vidrioA && v.espesor === espesorA);
     if (vidrioAData) {
-      if (vidrioAData.precio_m2 !== "A PEDIDO") {
+      if (vidrioAData.precio_m2 !== "A PEDIDO" && vidrioAData.precio_m2) {
         precio += parseFloat(vidrioAData.precio_m2) * m2 * factor;
       } else {
         aPedido = true;
       }
+    } else {
+      aPedido = true; // Si no encuentra datos, marcar como a pedido
     }
   }
 
   if (tipo === "Termopanel" && vidrioB && espesorB && preciosBase.vidrios) {
     const vidrioBData = preciosBase.vidrios.find(v => v.nombre === vidrioB && v.espesor === espesorB);
     if (vidrioBData) {
-      if (vidrioBData.precio_m2 !== "A PEDIDO") {
+      if (vidrioBData.precio_m2 !== "A PEDIDO" && vidrioBData.precio_m2) {
         precio += parseFloat(vidrioBData.precio_m2) * m2 * factor;
       } else {
         aPedido = true;
       }
+    } else {
+      aPedido = true;
     }
     if (separador && espesorSeparador && preciosBase.separadores) {
       const separadorData = preciosBase.separadores.find(s => s.nombre === separador && s.espesor === espesorSeparador);
-      if (separadorData && separadorData.precio_ml !== "n/d") {
+      if (separadorData && separadorData.precio_ml !== "n/d" && separadorData.precio_ml) {
         precio += parseFloat(separadorData.precio_ml) * ml * factor;
       } else if (separadorData) {
         aPedido = true;
@@ -250,7 +265,7 @@ function calcularLinea(id) {
 
   if (terminacion && preciosBase.terminaciones && terminacion !== "Crudo") {
     const terminacionData = preciosBase.terminaciones.find(t => t.nombre === terminacion && t.espesor === espesorA);
-    if (terminacionData && terminacionData.precio_ml !== "n/d") {
+    if (terminacionData && terminacionData.precio_ml !== "n/d" && terminacionData.precio_ml) {
       precio += parseFloat(terminacionData.precio_ml) * ml * factor;
     } else if (terminacionData) {
       aPedido = true;
@@ -259,7 +274,7 @@ function calcularLinea(id) {
 
   if (perforacion && cantPerforacion > 0 && preciosBase.perforaciones) {
     const perforacionData = preciosBase.perforaciones.find(p => p.nombre === perforacion && p.espesor === espesorA);
-    if (perforacionData && perforacionData.precio !== "n/d") {
+    if (perforacionData && perforacionData.precio !== "n/d" && perforacionData.precio) {
       precio += parseFloat(perforacionData.precio) * cantPerforacion * factor;
     } else if (perforacionData) {
       aPedido = true;
@@ -268,7 +283,7 @@ function calcularLinea(id) {
 
   if (destajado && cantDestajado > 0 && preciosBase.destajados) {
     const destajadoData = preciosBase.destajados.find(d => d.nombre === destajado && d.espesor === espesorA);
-    if (destajadoData && destajadoData.precio !== "n/d") {
+    if (destajadoData && destajadoData.precio !== "n/d" && destajadoData.precio) {
       precio += parseFloat(destajadoData.precio) * cantDestajado * factor;
     } else if (destajadoData) {
       aPedido = true;
@@ -280,10 +295,7 @@ function calcularLinea(id) {
   document.getElementById(`peso-${id}`).innerText = peso.toFixed(1);
   document.getElementById(`precio-${id}`).innerText = aPedido ? "A PEDIDO" : `$${Math.round(precio).toLocaleString()}`;
   document.getElementById(`precio-${id}`).style.color = aPedido ? "red" : "inherit";
-
-  // Obtener el lugar de entrega del formulario
-  const entrega = document.getElementById("entrega").value || "No especificado";
-  document.getElementById(`entrega-${id}`).innerText = entrega;
+  document.getElementById(`entrega-${id}`).value = entrega; // Asegurar que el valor se mantenga
 
   productosCotizados[id] = {
     id: id + 1,
@@ -370,7 +382,7 @@ function agregarSimilar() {
   document.getElementById(`cantPerforacion-${newId}`).value = producto.cantPerforacion || 0;
   document.getElementById(`destajado-${newId}`).value = producto.destajado || "";
   document.getElementById(`cantDestajado-${newId}`).value = producto.cantDestajado || 0;
-  document.getElementById(`entrega-${newId}`).innerText = producto.entrega || "No especificado";
+  document.getElementById(`entrega-${newId}`).value = producto.entrega || "Fábrica";
   calcularLinea(newId);
 }
 
