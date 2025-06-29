@@ -105,3 +105,6 @@ function cargarEspesores(id, parte = "") {
 
 // [Funciones de cálculo, resumen, IVA, peso y PDF se agregan en los siguientes módulos]
 
+window.agregarProducto = agregarProducto;
+
+

@@ -41,4 +41,33 @@
     <section class="entrega">
       <label for="entrega">Entrega en:</label>
       <select id="entrega">
-        <option value="Fabrica">Fá
+        <option value="Fabrica">Fábrica</option>
+        <option value="Obra">Obra</option>
+      </select>
+    </section>
+
+    <section id="resumen">
+      <h2>Resumen de Cotización</h2>
+      <div id="tablaResumen">
+        <!-- Aquí se inyectará el resumen generado -->
+      </div>
+    </section>
+
+    <section class="acciones">
+      <button onclick="guardarCotizacion()">Guardar</button>
+      <button onclick="exportarPDF()">Exportar a PDF</button>
+    </section>
+  </main>
+
+  <!-- Librería PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- Scripts del sistema -->
+  <script src="auth.js"></script>
+  <script src="dataLoader.js"></script>
+  <script src="cotizador.js"></script>
+  <script src="storage.js"></script>
+  <script src="pdfExporter.js"></script>
+  <script src="utils.js"></script>
+</body>
+</html>
