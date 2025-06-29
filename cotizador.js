@@ -1,3 +1,4 @@
+
 let preciosBase = {};
 let factorCliente = 1;
 let productosCotizados = [];
@@ -43,6 +44,7 @@ function agregarProducto() {
   productosCotizados.push({ id });
   actualizarOpciones(id);
 }
+window.agregarProducto = agregarProducto;
 
 function actualizarOpciones(id) {
   const tipo = document.getElementById(`tipo-${id}`).value;
@@ -89,7 +91,17 @@ function actualizarOpciones(id) {
 }
 
 function generarOpcionesVidrios() {
-  const tiposUnicos = [...new Set(preciosBase.vidrios.map(v => v.nombre))];
+  const permitidos = [
+    "Incoloro", "Bronce", "Mateluz", "Semilla", "Templado",
+    "Laminado_33_1", "Laminado_44_1", "Laminado_55_1", "Laminado_66_1",
+    "Laminado_33_2", "Laminado_44_2", "Laminado_55_2", "Laminado_66_2",
+    "Laminado_templado", "LowE Eco", "LowE Super"
+  ];
+
+  const tiposUnicos = [
+    ...new Set(preciosBase.vidrios.map(v => v.nombre))
+  ].filter(v => permitidos.includes(v));
+
   return tiposUnicos.map(v => `<option value="${v}">${v}</option>`).join("");
 }
 
@@ -101,10 +113,42 @@ function cargarEspesores(id, parte = "") {
     .map(v => v.espesor);
   const target = document.getElementById(`espesor${parte}-${id}`);
   target.innerHTML = espesores.map(e => `<option>${e}</option>`).join("");
+
+  if (!parte) {
+    target.addEventListener("change", () => {
+      const nuevoEspesor = parseFloat(target.value);
+      const contenedor = document.getElementById(`opciones-${id}`);
+      const viejo = contenedor.querySelector(".terminaciones");
+      if (viejo) viejo.remove();
+      agregarOpcionesEspeciales(id, nuevoEspesor);
+    });
+    const espInicial = parseFloat(target.value);
+    if (!isNaN(espInicial)) agregarOpcionesEspeciales(id, espInicial);
+  }
 }
 
-// [Funciones de cálculo, resumen, IVA, peso y PDF se agregan en los siguientes módulos]
+function agregarOpcionesEspeciales(id, espesor) {
+  const contenedor = document.getElementById(`opciones-${id}`);
+  const terminacionesHTML = [];
 
-window.agregarProducto = agregarProducto;
+  if ([4, 6, 8, 10].includes(espesor)) {
+    terminacionesHTML.push(`<label><input type="checkbox" id="botado-${id}"/> Botado Arista</label>`);
+  }
+  if ([4, 5, 6].includes(espesor)) {
+    terminacionesHTML.push(`<label><input type="checkbox" id="botadoTP-${id}"/> Botado Arista x TP</label>`);
+  }
+  if (espesor >= 4 && espesor <= 19) {
+    terminacionesHTML.push(`<label><input type="checkbox" id="perforado-${id}"/> Perforado normal</label>`);
+  }
+  if (espesor >= 4 && espesor <= 12) {
+    terminacionesHTML.push(`<label><input type="checkbox" id="avellanado-${id}"/> Perforado avellanado</label>`);
+    terminacionesHTML.push(`<label><input type="checkbox" id="destajado-${id}"/> Destajado normal</label>`);
+    terminacionesHTML.push(`<label><input type="checkbox" id="destajadoC-${id}"/> Destajado central</label>`);
+  }
 
+  const wrapper = document.createElement("div");
+  wrapper.className = "terminaciones";
+  wrapper.innerHTML = `<h4>Terminaciones y Cortes</h4>` + terminacionesHTML.join("<br/>");
 
+  contenedor.appendChild(wrapper);
+}
