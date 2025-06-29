@@ -45,7 +45,6 @@ function agregarProducto() {
 
   const tr = document.createElement("tr");
   tr.innerHTML = `
-    <td><input type="checkbox" class="seleccionar-linea" style="width: 20px;"></td>
     <td class="numero-linea">${id + 1}</td>
     <td><input type="text" id="nombre-${id}" placeholder="Nombre"></td>
     <td><input type="number" id="cantidad-${id}" value="1" min="1" onchange="calcularLinea(${id})"></td>
@@ -70,6 +69,7 @@ function agregarProducto() {
     <td id="peso-${id}">0</td>
     <td id="precio-${id}">$0</td>
     <td id="entrega-${id}"></td>
+    <td><input type="checkbox" class="seleccionar-linea" style="width: 20px;"></td>
   `;
 
   tbody.appendChild(tr);
@@ -209,7 +209,7 @@ function calcularLinea(id) {
   const cantPerforacion = parseInt(document.getElementById(`cantPerforacion-${id}`).value || 0);
   const destajado = document.getElementById(`destajado-${id}`).value;
   const cantDestajado = parseInt(document.getElementById(`cantDestajado-${id}`).value || 0);
-  const factor = 1; // Fijo el factor a 1, eliminando la dependencia de localStorage
+  const factor = 1;
 
   const m2 = calcularM2(ancho_mm, alto_mm) * cantidad;
   const ml = calcularML(ancho_mm, alto_mm) * cantidad;
@@ -371,7 +371,6 @@ function agregarSimilar() {
   document.getElementById(`destajado-${newId}`).value = producto.destajado || "";
   document.getElementById(`cantDestajado-${newId}`).value = producto.cantDestajado || 0;
   document.getElementById(`entrega-${newId}`).innerText = producto.entrega || "No especificado";
-  actualizarCamposPorEspesor(newId);
   calcularLinea(newId);
 }
 
