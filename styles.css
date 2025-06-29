@@ -48,7 +48,7 @@ form {
 
 table {
   width: 100%;
-  min-width: 1200px;
+  min-width: 1300px;
   border-collapse: collapse;
 }
 
@@ -58,7 +58,7 @@ th, td {
   text-align: left;
   vertical-align: middle;
   font-size: 0.85rem;
-  max-width: 100px; /* Limita el ancho máximo de las celdas */
+  max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
