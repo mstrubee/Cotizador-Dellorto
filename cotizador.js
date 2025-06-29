@@ -29,16 +29,16 @@ async function fetchPrecios() {
 function agregarProducto() {
   const id = productosCotizados.length;
   const container = document.createElement("div");
-  container.className = "producto";
+  container.className = "producto fila-producto";
   container.innerHTML = `
-    <h3>Producto ${id + 1}</h3>
+    <label>Producto ${id + 1}</label>
     <input type="text" placeholder="Nombre" id="nombre-${id}" />
     <input type="number" placeholder="Cantidad" id="cantidad-${id}" min="1" />
     <select id="tipo-${id}" onchange="actualizarOpciones(${id})">
       <option value="Vidrio">Vidrio</option>
       <option value="Termopanel">Termopanel</option>
     </select>
-    <div id="opciones-${id}"></div>
+    <div id="opciones-${id}" class="subcampos"></div>
   `;
   document.getElementById("productos").appendChild(container);
   productosCotizados.push({ id });
@@ -53,20 +53,30 @@ function actualizarOpciones(id) {
 
   if (tipo === "Vidrio") {
     contenedor.innerHTML = `
-      <select id="vidrioTipo-${id}">${generarOpcionesVidrios()}</select>
+      <select id="vidrioTipo-${id}" onchange="cargarEspesores(${id})">${generarOpcionesVidrios()}</select>
       <select id="espesor-${id}"></select>
       <input type="number" placeholder="Alto (mm)" id="alto-${id}" />
       <input type="number" placeholder="Ancho (mm)" id="ancho-${id}" />
+      <select id="terminacion-${id}">
+        <option value="">Sin terminación</option>
+      </select>
+      <select id="perforacion-${id}">
+        <option value="">Sin perforación</option>
+      </select>
+      <input type="number" placeholder="N° perforaciones" id="numPerforaciones-${id}" min="0" style="width: 60px;" />
+      <select id="destajado-${id}">
+        <option value="">Sin destaje</option>
+      </select>
+      <input type="number" placeholder="N° destajes" id="numDestajes-${id}" min="0" style="width: 60px;" />
     `;
-    document.getElementById(`vidrioTipo-${id}`).addEventListener("change", () => cargarEspesores(id));
     cargarEspesores(id);
   } else {
     contenedor.innerHTML = `
-      <h4>Vidrio A</h4>
-      <select id="vidrioA-${id}">${generarOpcionesVidrios()}</select>
+      <label>Vidrio A</label>
+      <select id="vidrioA-${id}" onchange="cargarEspesores(${id}, 'A')">${generarOpcionesVidrios()}</select>
       <select id="espesorA-${id}"></select>
-      <h4>Vidrio B</h4>
-      <select id="vidrioB-${id}">${generarOpcionesVidrios()}</select>
+      <label>Vidrio B</label>
+      <select id="vidrioB-${id}" onchange="cargarEspesores(${id}, 'B')">${generarOpcionesVidrios()}</select>
       <select id="espesorB-${id}"></select>
       <label>Separador:</label>
       <select id="separador-${id}">
@@ -83,10 +93,8 @@ function actualizarOpciones(id) {
       <input type="number" placeholder="Alto (mm)" id="alto-${id}" />
       <input type="number" placeholder="Ancho (mm)" id="ancho-${id}" />
     `;
-    document.getElementById(`vidrioA-${id}`).addEventListener("change", () => cargarEspesores(id, "A"));
-    document.getElementById(`vidrioB-${id}`).addEventListener("change", () => cargarEspesores(id, "B"));
-    cargarEspesores(id, "A");
-    cargarEspesores(id, "B");
+    cargarEspesores(id, 'A');
+    cargarEspesores(id, 'B');
   }
 }
 
@@ -115,40 +123,33 @@ function cargarEspesores(id, parte = "") {
   target.innerHTML = espesores.map(e => `<option>${e}</option>`).join("");
 
   if (!parte) {
-    target.addEventListener("change", () => {
-      const nuevoEspesor = parseFloat(target.value);
-      const contenedor = document.getElementById(`opciones-${id}`);
-      const viejo = contenedor.querySelector(".terminaciones");
-      if (viejo) viejo.remove();
-      agregarOpcionesEspeciales(id, nuevoEspesor);
-    });
-    const espInicial = parseFloat(target.value);
-    if (!isNaN(espInicial)) agregarOpcionesEspeciales(id, espInicial);
+    cargarTerminaciones(id);
   }
 }
 
-function agregarOpcionesEspeciales(id, espesor) {
-  const contenedor = document.getElementById(`opciones-${id}`);
-  const terminacionesHTML = [];
+function cargarTerminaciones(id) {
+  const espesor = parseFloat(document.getElementById(`espesor-${id}`).value);
+  const terminacion = document.getElementById(`terminacion-${id}`);
+  const perforacion = document.getElementById(`perforacion-${id}`);
+  const destajado = document.getElementById(`destajado-${id}`);
+
+  // Reiniciar opciones
+  terminacion.innerHTML = `<option value="">Sin terminación</option>`;
+  perforacion.innerHTML = `<option value="">Sin perforación</option>`;
+  destajado.innerHTML = `<option value="">Sin destaje</option>`;
 
   if ([4, 6, 8, 10].includes(espesor)) {
-    terminacionesHTML.push(`<label><input type="checkbox" id="botado-${id}"/> Botado Arista</label>`);
+    terminacion.innerHTML += `<option value="Botado Arista">Botado Arista</option>`;
   }
   if ([4, 5, 6].includes(espesor)) {
-    terminacionesHTML.push(`<label><input type="checkbox" id="botadoTP-${id}"/> Botado Arista x TP</label>`);
+    terminacion.innerHTML += `<option value="Botado Arista x TP">Botado Arista x TP</option>`;
   }
   if (espesor >= 4 && espesor <= 19) {
-    terminacionesHTML.push(`<label><input type="checkbox" id="perforado-${id}"/> Perforado normal</label>`);
+    perforacion.innerHTML += `<option value="Perforado normal">Perforado normal</option>`;
   }
   if (espesor >= 4 && espesor <= 12) {
-    terminacionesHTML.push(`<label><input type="checkbox" id="avellanado-${id}"/> Perforado avellanado</label>`);
-    terminacionesHTML.push(`<label><input type="checkbox" id="destajado-${id}"/> Destajado normal</label>`);
-    terminacionesHTML.push(`<label><input type="checkbox" id="destajadoC-${id}"/> Destajado central</label>`);
+    perforacion.innerHTML += `<option value="Perforado avellanado">Perforado avellanado</option>`;
+    destajado.innerHTML += `<option value="Destajado normal">Destajado normal</option>`;
+    destajado.innerHTML += `<option value="Destajado central">Destajado central</option>`;
   }
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "terminaciones";
-  wrapper.innerHTML = `<h4>Terminaciones y Cortes</h4>` + terminacionesHTML.join("<br/>");
-
-  contenedor.appendChild(wrapper);
 }
