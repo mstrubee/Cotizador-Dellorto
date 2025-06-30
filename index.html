@@ -46,7 +46,6 @@
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="auth.js"></script>
   <script>
     // Redirigir a login.html si no hay usuario autenticado
     document.addEventListener("DOMContentLoaded", () => {
@@ -56,6 +55,7 @@
       }
     });
   </script>
+  <script src="auth.js"></script>
   <script src="utils.js"></script>
   <script src="dataLoader.js"></script>
   <script src="cotizador.js"></script>
@@ -75,6 +75,12 @@
       <input type="text" id="direccion" placeholder="Dirección">
       <input type="text" id="folio" placeholder="Folio">
       <input type="text" id="supervisor" placeholder="Supervisor">
+      <select id="entrega">
+        <option value="Fábrica">Fábrica</option>
+        <option value="Obra">Obra</option>
+      </select>
+      <label><input type="checkbox" id="servicioInstalacion"> Instalación</label>
+      <label><input type="checkbox" id="servicioTransporte"> Transporte</label>
     </form>
     <div>
       <button id="agregarProducto">+ Añadir Ítem</button>
@@ -96,7 +102,7 @@
         <tbody id="cuerpoTabla"></tbody>
       </table>
     </div>
-    <div id="resumenCotizacion">
+    <div id="resumenCotizaciones">
       <p>Total Neto: $0</p>
       <p>IVA (19%): $0</p>
       <p>Total Final: $0</p>
