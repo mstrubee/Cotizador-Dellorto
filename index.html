@@ -42,65 +42,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cotizador GPT</title>
+  <title>Cotizador</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="auth.js"></script>
-  <script>
-    // Redirigir a login.html si no hay usuario autenticado
-    document.addEventListener("DOMContentLoaded", () => {
-      const usuario = localStorage.getItem("usuario");
-      if (!usuario) {
-        window.location.href = "login.html";
-      }
-    });
-  </script>
-  <script src="utils.js"></script>
-  <script src="dataLoader.js"></script>
-  <script src="cotizador.js"></script>
-  <script src="storage.js"></script>
-  <script src="pdfExporter.js"></script>
+  <script src="cotizador.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>Cotizador GPT</h1>
-    <button onclick="logout()">Cerrar Sesión</button>
-  </header>
   <div class="container">
-    <h2>Nueva Cotización</h2>
-    <form id="cotizacionForm">
-      <input type="text" id="nombreEmpresa" placeholder="Nombre Empresa">
-      <input type="text" id="obra" placeholder="Obra">
-      <input type="text" id="direccion" placeholder="Dirección">
-      <input type="text" id="folio" placeholder="Folio">
-      <input type="text" id="supervisor" placeholder="Supervisor">
-    </form>
-    <div>
-      <button id="agregarProducto">+ Añadir Ítem</button>
-      <button id="agregarSimilar">+ Añadir Similar</button>
-      <button id="borrarSeleccion">Borrar Selección</button>
-      <button id="guardarCotizacion">Guardar Cotización</button>
-      <button id="exportarPDF">Exportar a PDF</button>
-    </div>
-    <div class="table-container">
-      <table id="tablaResumen">
-        <thead>
-          <tr>
-            <th>#</th><th>Nombre</th><th>Cantidad</th><th>Elemento</th><th>Alto (mm)</th><th>Ancho (mm)</th>
-            <th>Vidrio A</th><th>Espesor A</th><th>Vidrio B</th><th>Espesor B</th><th>Separador</th>
-            <th>Espesor Sep.</th><th>Color Sep.</th><th>Terminación</th><th>Perforación</th><th>Destajado</th>
-            <th>m²</th><th>mL</th><th>Peso</th><th>Precio</th><th>Entrega</th><th>Seleccionar</th>
-          </tr>
-        </thead>
-        <tbody id="cuerpoTabla"></tbody>
-      </table>
-    </div>
-    <div id="resumenCotizacion">
-      <p>Total Neto: $0</p>
-      <p>IVA (19%): $0</p>
-      <p>Total Final: $0</p>
-    </div>
+    <h1>Cotizador de Productos</h1>
+    <table id="tablaProductos">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Nombre</th>
+          <th>Espesor</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="listaProductos"></tbody>
+    </table>
+    <button onclick="agregarItem()">+ Añadir Ítem</button>
+    <button onclick="cargarSecciones()">Cargar Secciones Manualmente</button>
+    <div id="errorMensaje" style="color: red;"></div>
+    <div id="logMensaje" style="color: blue;"></div>
   </div>
+  <script>
+    (function() {
+      try {
+        console.log("Script inicial ejecutándose...");
+        const usuario = localStorage.getItem("usuario");
+        if (!usuario) {
+          console.log("No hay usuario autenticado, redirigiendo a login.html");
+          window.location.replace("login.html");
+        } else {
+          console.log("Usuario autenticado:", usuario);
+        }
+      } catch (e) {
+        console.error("Error en script inicial:", e);
+        document.getElementById("errorMensaje").innerText = "Error al cargar la aplicación. Contacta al administrador.";
+      }
+    })();
+  </script>
 </body>
 </html>
