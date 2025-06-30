@@ -44,37 +44,27 @@
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <title>Cotizador</title>
        <link rel="stylesheet" href="styles.css">
-       <script src="cotizador.js" defer></script>
      </head>
      <body>
        <div class="container">
          <h1>Cotizador de Productos</h1>
-         <table id="tablaProductos">
-           <thead>
-             <tr>
-               <th>Tipo</th>
-               <th>Nombre</th>
-               <th>Espesor</th>
-               <th>Precio</th>
-               <th>Acciones</th>
-             </tr>
-           </thead>
-           <tbody id="listaProductos"></tbody>
-         </table>
-         <button onclick="agregarItem()">+ Añadir Ítem</button>
+         <p>Si ves este mensaje, la página se cargó correctamente. Revisa la consola para errores.</p>
          <div id="errorMensaje" style="color: red;"></div>
        </div>
        <script>
-         // Redirección básica
          (function() {
            try {
+             console.log("Script inicial ejecutándose...");
              const usuario = localStorage.getItem("usuario");
              if (!usuario) {
+               console.log("No hay usuario autenticado, redirigiendo a login.html");
                window.location.replace("login.html");
+             } else {
+               console.log("Usuario autenticado:", usuario);
              }
            } catch (e) {
+             console.error("Error en script inicial:", e);
              document.getElementById("errorMensaje").innerText = "Error al cargar la aplicación. Contacta al administrador.";
-             console.error("Error en redirección:", e);
            }
          })();
        </script>
