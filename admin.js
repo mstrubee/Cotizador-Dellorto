@@ -230,13 +230,21 @@ function procesarDatos(filas) {
 
 function mostrarMensaje(mensaje, color) {
   const mensajeEstado = document.getElementById("mensajeEstado");
+  if (!mensajeEstado) {
+    console.error("Elemento #mensajeEstado no encontrado");
+    return;
+  }
   mensajeEstado.innerText = mensaje;
   mensajeEstado.style.color = color;
   mensajeEstado.style.display = "block";
   setTimeout(() => {
-    mensajeEstado.style.display = "none";
-    mensajeEstado.innerText = "";
-    console.log("Mensaje oculto:", mensaje);
+    try {
+      mensajeEstado.style.display = "none";
+      mensajeEstado.innerText = "";
+      console.log("Mensaje oculto:", mensaje);
+    } catch (e) {
+      console.error("Error al ocultar mensaje:", e);
+    }
   }, 3000);
 }
 
@@ -287,11 +295,12 @@ function guardarPreciosModificados(event) {
   console.log("Comparando valores - Original:", valorOriginal, "Nuevo:", nuevoPrecio);
 
   // Normalizar valores para comparación
-  const normalizedOriginal = valorOriginal === "A PEDIDO" || valorOriginal === "n/d" ? valorOriginal : parseFloat(valorOriginal) || 0;
-  const normalizedNuevo = nuevoPrecio === "A PEDIDO" || nuevoPrecio === "n/d" ? nuevoPrecio : parseFloat(nuevoPrecio) || 0;
+  const normalizedOriginal = isNaN(parseFloat(valorOriginal)) ? valorOriginal : parseFloat(valorOriginal);
+  const normalizedNuevo = isNaN(parseFloat(nuevoPrecio)) ? nuevoPrecio : parseFloat(nuevoPrecio);
 
-  // No hacer nada si el valor no cambió
-  if (normalizedOriginal === normalizedNuevo) {
+  // Comparar solo si ambos son números o ambos son cadenas
+  if ((typeof normalizedOriginal === "number" && normalizedOriginal === normalizedNuevo) ||
+      (typeof normalizedOriginal === "string" && normalizedOriginal === normalizedNuevo)) {
     console.log(`No hay cambios en el precio para ${categoria} - ${nombre} (${espesor || "N/A"}): ${nuevoPrecio}`);
     return;
   }
