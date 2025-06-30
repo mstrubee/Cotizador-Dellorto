@@ -44,17 +44,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cotizador GPT</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
     // Redirigir a login.html si no hay usuario autenticado
-    document.addEventListener("DOMContentLoaded", () => {
+    (function() {
+      console.log("Verificando autenticación...");
       const usuario = localStorage.getItem("usuario");
       if (!usuario) {
+        console.log("No hay usuario autenticado, redirigiendo a login.html");
         window.location.href = "login.html";
+      } else {
+        console.log("Usuario autenticado encontrado:", usuario);
       }
-    });
+    })();
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="auth.js"></script>
   <script src="utils.js"></script>
   <script src="dataLoader.js"></script>
@@ -102,7 +106,7 @@
         <tbody id="cuerpoTabla"></tbody>
       </table>
     </div>
-    <div id="resumenCotizaciones">
+    <div id="resumenCotizacion">
       <p>Total Neto: $0</p>
       <p>IVA (19%): $0</p>
       <p>Total Final: $0</p>
