@@ -1,6 +1,12 @@
 function verificarClave() {
-  const clave = document.getElementById("adminClave").value;
-  console.log("Verificando clave de administrador:", clave);
+  const claveInput = document.getElementById("adminClave");
+  if (!claveInput) {
+    console.error("Campo #adminClave no encontrado");
+    return;
+  }
+  const clave = claveInput.value;
+  console.log("Valor ingresado en #adminClave:", clave);
+
   if (clave === "6658") {
     console.log("Clave de administrador correcta, mostrando panel");
     document.querySelector(".login-container").style.display = "none";
@@ -8,7 +14,12 @@ function verificarClave() {
     inicializarPreciosPorDefecto();
   } else {
     console.log("Clave de administrador incorrecta");
-    document.getElementById("errorClave").innerText = "Clave de administrador incorrecta";
+    const errorClave = document.getElementById("errorClave");
+    if (errorClave) {
+      errorClave.innerText = "Clave de administrador incorrecta";
+    } else {
+      console.error("Elemento #errorClave no encontrado");
+    }
   }
 }
 
@@ -138,11 +149,7 @@ function inicializarPreciosPorDefecto() {
       { tipo: "Destajado", nombre: "Destajado central", espesor: 8, precio: 1000 },
       { tipo: "Destajado", nombre: "Destajado central", espesor: 10, precio: 12000 },
       { tipo: "Destajado", nombre: "Destajado central", espesor: 12, precio: 12000 },
-    ],
-    servicios: {
-      instalacion: { precio: 5000 },
-      transporte: { precio: 3000 }
-    }
+    ]
   };
 
   localStorage.setItem("precios", JSON.stringify(preciosPorDefecto));
@@ -194,7 +201,6 @@ function procesarDatos(filas) {
     if (!fila.Tipo || !fila.Nombre || fila.Espesor === undefined || fila.Precio === undefined) continue;
 
     let precio = fila.Precio.toString().trim();
-    // Limpiar formato de moneda (por ejemplo, "$ 8,165" → 8165)
     if (precio.startsWith("$")) {
       precio = precio.replace(/[$ ,]/g, "");
       precio = precio === "A PEDIDO" || precio === "n/d" ? precio : parseFloat(precio) || 0;
@@ -294,11 +300,9 @@ function guardarPreciosModificados(event) {
 
   console.log("Comparando valores - Original:", valorOriginal, "Nuevo:", nuevoPrecio);
 
-  // Normalizar valores para comparación
   const normalizedOriginal = isNaN(parseFloat(valorOriginal)) ? valorOriginal : parseFloat(valorOriginal);
   const normalizedNuevo = isNaN(parseFloat(nuevoPrecio)) ? nuevoPrecio : parseFloat(nuevoPrecio);
 
-  // Comparar solo si ambos son números o ambos son cadenas
   if ((typeof normalizedOriginal === "number" && normalizedOriginal === normalizedNuevo) ||
       (typeof normalizedOriginal === "string" && normalizedOriginal === normalizedNuevo)) {
     console.log(`No hay cambios en el precio para ${categoria} - ${nombre} (${espesor || "N/A"}): ${nuevoPrecio}`);
@@ -325,7 +329,7 @@ function guardarPreciosModificados(event) {
   }
 
   localStorage.setItem("precios", JSON.stringify(precios));
-  cell.dataset.valorOriginal = nuevoPrecio; // Actualizar el valor original
+  cell.dataset.valorOriginal = nuevoPrecio;
   mostrarMensaje("Precio actualizado correctamente.", "green");
 }
 
