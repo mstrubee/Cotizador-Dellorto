@@ -48,7 +48,6 @@ form {
 
 table {
   width: 100%;
-  min-width: 1300px;
   border-collapse: collapse;
 }
 
@@ -58,10 +57,7 @@ th, td {
   text-align: left;
   vertical-align: middle;
   font-size: 0.85rem;
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  min-width: 60px;
 }
 
 th {
@@ -118,4 +114,33 @@ pre {
   padding: 1rem;
   border-radius: 8px;
   overflow-x: auto;
+}
+
+/* Responsividad */
+@media screen and (max-width: 768px) {
+  table {
+    font-size: 0.75rem;
+  }
+  th, td {
+    padding: 0.3rem;
+    min-width: 50px;
+  }
+  td input, td select {
+    font-size: 0.75rem;
+    padding: 0.3rem;
+  }
+  /* Mantener m², mL y peso visibles */
+  th:nth-child(17), td:nth-child(17), /* m² */
+  th:nth-child(18), td:nth-child(18), /* mL */
+  th:nth-child(19), td:nth-child(19) /* Peso */ {
+    display: table-cell;
+  }
+  /* Ocultar columnas menos críticas en móviles */
+  th:nth-child(9), td:nth-child(9), /* Vidrio B */
+  th:nth-child(10), td:nth-child(10), /* Espesor B */
+  th:nth-child(11), td:nth-child(11), /* Separador */
+  th:nth-child(12), td:nth-child(12), /* Espesor Sep. */
+  th:nth-child(13), td:nth-child(13) /* Color Sep. */ {
+    display: none;
+  }
 }

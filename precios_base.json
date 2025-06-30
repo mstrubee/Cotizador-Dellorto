@@ -80,9 +80,9 @@
     {"nombre": "Botado arista", "espesor": 6, "precio_ml": 150},
     {"nombre": "Botado arista", "espesor": 8, "precio_ml": 150},
     {"nombre": "Botado arista", "espesor": 10, "precio_ml": 150},
-    {"nombre": "Botado arista x tp", "espesor": 4, "price_ml": 200},
-    {"nombre": "Botado arista x tp", "espesor": 5, "price_ml": 200},
-    {"nombre": "Botado arista x tp", "espesor": 6, "price_ml": 200}
+    {"nombre": "Botado arista x tp", "espesor": 4, "precio_ml": 200},
+    {"nombre": "Botado arista x tp", "espesor": 5, "precio_ml": 200},
+    {"nombre": "Botado arista x tp", "espesor": 6, "precio_ml": 200}
   ],
   "perforaciones": [
     {"nombre": "Perforado normal", "espesor": 4, "precio": 0},
@@ -116,5 +116,9 @@
     {"nombre": "Destajado central", "espesor": 8, "precio": 1000},
     {"nombre": "Destajado central", "espesor": 10, "precio": 12000},
     {"nombre": "Destajado central", "espesor": 12, "precio": 12000}
-  ]
+  ],
+  "servicios": {
+    "instalacion": { "precio": 5000 },
+    "transporte": { "precio": 3000 }
+  }
 }

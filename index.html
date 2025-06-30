@@ -45,11 +45,13 @@
   <title>Cotizador GPT</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="utils.js" defer></script>
-  <script src="cotizador.js" defer></script>
-  <script src="storage.js" defer></script>
-  <script src="pdfExporter.js" defer></script>
-  <script src="auth.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="utils.js"></script>
+  <script src="dataLoader.js"></script>
+  <script src="cotizador.js"></script>
+  <script src="storage.js"></script>
+  <script src="pdfExporter.js"></script>
 </head>
 <body>
   <header>
@@ -59,72 +61,33 @@
   <div class="container">
     <h2>Nueva Cotización</h2>
     <form id="cotizacionForm">
-      <input type="text" id="nombre" placeholder="Nombre" required>
-      <input type="text" id="nombreEmpresa" placeholder="Nombre Empresa" required>
-      <input type="text" id="obra" placeholder="Obra" required>
+      <input type="text" id="nombreEmpresa" placeholder="Nombre Empresa">
+      <input type="text" id="obra" placeholder="Obra">
       <input type="text" id="direccion" placeholder="Dirección">
-      <input type="text" id="presupuesto" placeholder="Presupuesto">
-      <input type="text" id="folio" placeholder="Folio" required>
+      <input type="text" id="folio" placeholder="Folio">
       <input type="text" id="supervisor" placeholder="Supervisor">
+      <select id="entrega">
+        <option value="Fábrica">Fábrica</option>
+        <option value="Obra">Obra</option>
+      </select>
       <label><input type="checkbox" id="servicioInstalacion"> Instalación</label>
       <label><input type="checkbox" id="servicioTransporte"> Transporte</label>
     </form>
-    <button id="agregarProducto">+ Añadir Ítem</button>
-    <button id="agregarSimilar">+ Añadir Similar</button>
-    <button id="borrarSeleccion">Borrar Selección</button>
-    <button onclick="guardarCotizacion()">Guardar Cotización</button>
-    <button onclick="exportarPDF()">Exportar a PDF</button>
+    <div>
+      <button id="agregarProducto">+ Añadir Ítem</button>
+      <button id="agregarSimilar">+ Añadir Similar</button>
+      <button id="borrarSeleccion">Borrar Selección</button>
+      <button id="guardarCotizacion">Guardar Cotización</button>
+      <button id="exportarPDF">Exportar a PDF</button>
+    </div>
     <div class="table-container">
       <table id="tablaResumen">
         <thead>
           <tr>
-            <th>A</th>
-            <th>B</th>
-            <th>C</th>
-            <th>D</th>
-            <th>E</th>
-            <th>F</th>
-            <th>G</th>
-            <th>H</th>
-            <th>I</th>
-            <th>J</th>
-            <th>K</th>
-            <th>L</th>
-            <th>M</th>
-            <th>N</th>
-            <th>O</th>
-            <th>P</th>
-            <th>Q</th>
-            <th>R</th>
-            <th>S</th>
-            <th>T</th>
-            <th>U</th>
-            <th>V</th>
-            <th>W</th>
-          </tr>
-          <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>Elemento</th>
-            <th>Alto (mm)</th>
-            <th>Ancho (mm)</th>
-            <th>Vidrio A</th>
-            <th>Espesor A</th>
-            <th>Vidrio B</th>
-            <th>Espesor B</th>
-            <th>Separador</th>
-            <th>Espesor Sep.</th>
-            <th>Color Sep.</th>
-            <th>Terminación</th>
-            <th>Perforación</th>
-            <th>Destajado</th>
-            <th>m²</th>
-            <th>mL</th>
-            <th>Peso</th>
-            <th>Precio</th>
-            <th>Entrega</th>
-            <th>Seleccionar</th>
+            <th>#</th><th>Nombre</th><th>Cantidad</th><th>Elemento</th><th>Alto (mm)</th><th>Ancho (mm)</th>
+            <th>Vidrio A</th><th>Espesor A</th><th>Vidrio B</th><th>Espesor B</th><th>Separador</th>
+            <th>Espesor Sep.</th><th>Color Sep.</th><th>Terminación</th><th>Perforación</th><th>Destajado</th>
+            <th>m²</th><th>mL</th><th>Peso</th><th>Precio</th><th>Entrega</th><th>Seleccionar</th>
           </tr>
         </thead>
         <tbody id="cuerpoTabla"></tbody>

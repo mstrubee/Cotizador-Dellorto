@@ -27,18 +27,6 @@ const espesoresPorVidrio = {
 const coloresSeparador = ["Negro", "Plata Mate", "Bronce"];
 const espesoresSeparador = [6, 8, 10, 12, 15, 19, 20];
 
-async function cargarPrecios() {
-  try {
-    const res = await fetch("precios_base.json");
-    preciosBase = await res.json();
-    localStorage.setItem("precios", JSON.stringify(preciosBase));
-    console.log("Precios cargados:", preciosBase);
-  } catch (e) {
-    console.error("Error al cargar precios_base.json:", e);
-    preciosBase = JSON.parse(localStorage.getItem("precios") || "{}");
-  }
-}
-
 function agregarProducto() {
   const tbody = document.getElementById("cuerpoTabla");
   const id = contadorProductos++;
@@ -47,13 +35,13 @@ function agregarProducto() {
   tr.innerHTML = `
     <td class="numero-linea">${id + 1}</td>
     <td><input type="text" id="nombre-${id}" placeholder="Nombre"></td>
-    <td><input type="number" id="cantidad-${id}" value="1" min="1" onchange="calcularLinea(${id})"></td>
+    <td><input type="number" id="cantidad-${id}" value="1" min="1" step="1" onchange="calcularLinea(${id})"></td>
     <td><select id="tipo-${id}" onchange="actualizarCampos(${id}); calcularLinea(${id})">
       <option value="Vidrio">Vidrio</option>
       <option value="Termopanel">Termopanel</option>
     </select></td>
-    <td><input type="number" id="alto-${id}" value="1000" min="0" onchange="calcularLinea(${id})"></td>
-    <td><input type="number" id="ancho-${id}" value="1000" min="0" onchange="calcularLinea(${id})"></td>
+    <td><input type="number" id="alto-${id}" value="1000" min="0" step="1" onchange="calcularLinea(${id})"></td>
+    <td><input type="number" id="ancho-${id}" value="1000" min="0" step="1" onchange="calcularLinea(${id})"></td>
     <td><select id="vidrioA-${id}" onchange="actualizarEspesores(${id}, 'A'); calcularLinea(${id})"></select></td>
     <td><select id="espesorA-${id}" onchange="actualizarCamposPorEspesor(${id}); calcularLinea(${id})"></select></td>
     <td><select id="vidrioB-${id}" onchange="actualizarEspesores(${id}, 'B'); calcularLinea(${id})" style="display: none;"></select></td>
@@ -62,8 +50,8 @@ function agregarProducto() {
     <td><select id="espesorSeparador-${id}" onchange="calcularLinea(${id})" style="display: none;"></select></td>
     <td><select id="colorSeparador-${id}" onchange="calcularLinea(${id})" style="display: none;"></select></td>
     <td><select id="terminacion-${id}" onchange="calcularLinea(${id})"></select></td>
-    <td><select id="perforacion-${id}" onchange="mostrarCantidad(${id}, 'perforacion')"></select><input type="number" id="cantPerforacion-${id}" min="0" value="0" style="width: 60px" onchange="calcularLinea(${id})" style="display: none;"></td>
-    <td><select id="destajado-${id}" onchange="mostrarCantidad(${id}, 'destajado')"></select><input type="number" id="cantDestajado-${id}" min="0" value="0" style="width: 60px" onchange="calcularLinea(${id})" style="display: none;"></td>
+    <td><select id="perforacion-${id}" onchange="mostrarCantidad(${id}, 'perforacion')"></select><input type="number" id="cantPerforacion-${id}" min="0" value="0" style="width: 60px; display: none;" onchange="calcularLinea(${id})"></td>
+    <td><select id="destajado-${id}" onchange="mostrarCantidad(${id}, 'destajado')"></select><input type="number" id="cantDestajado-${id}" min="0" value="0" style="width: 60px; display: none;" onchange="calcularLinea(${id})"></td>
     <td id="m2-${id}">0</td>
     <td id="ml-${id}">0</td>
     <td id="peso-${id}">0</td>
@@ -175,23 +163,21 @@ function actualizarCamposPorEspesor(id) {
   terminacion.innerHTML = '<option value="">Ninguna</option>';
   if (tipo === "Vidrio" && espesorA && [4, 5, 6, 8, 10].includes(espesorA)) {
     terminacion.innerHTML += '<option value="Botado arista">Botado arista</option>';
+  } else if (tipo === "Termopanel" && espesorA && [4, 5, 6].includes(espesorA)) {
+    terminacion.innerHTML += '<option value="Botado arista x tp">Botado arista x tp</option>';
+    terminacion.value = "Botado arista x tp";
   } else if (tipo === "Termopanel" && espesorA) {
-    if ([4, 5, 6].includes(espesorA)) {
-      terminacion.innerHTML += '<option value="Botado arista x tp">Botado arista x tp</option>';
-      terminacion.value = "Botado arista x tp";
-    } else {
-      terminacion.innerHTML += '<option value="Crudo">Crudo</option>';
-      terminacion.value = "Crudo";
-    }
+    terminacion.innerHTML += '<option value="Crudo">Crudo</option>';
+    terminacion.value = "Crudo";
   }
 
   const perforacion = document.getElementById(`perforacion-${id}`);
   perforacion.innerHTML = '<option value="">Ninguna</option>';
   if (tipo === "Vidrio" && espesorA >= 4 && espesorA <= 19) {
     perforacion.innerHTML += '<option value="Perforado normal">Perforado normal</option>';
-  }
-  if (tipo === "Vidrio" && espesorA >= 4 && espesorA <= 12) {
-    perforacion.innerHTML += '<option value="Perforado avellanado">Perforado avellanado</option>';
+    if (espesorA <= 12) {
+      perforacion.innerHTML += '<option value="Perforado avellanado">Perforado avellanado</option>';
+    }
   }
   perforacion.disabled = tipo === "Termopanel";
 
@@ -205,143 +191,169 @@ function actualizarCamposPorEspesor(id) {
 }
 
 function calcularLinea(id) {
-  const alto_mm = parseFloat(document.getElementById(`alto-${id}`).value || 0);
-  const ancho_mm = parseFloat(document.getElementById(`ancho-${id}`).value || 0);
-  const espesorA = parseFloat(document.getElementById(`espesorA-${id}`).value || 0);
-  const espesorB = parseFloat(document.getElementById(`espesorB-${id}`).value || 0);
-  const espesorSeparador = parseFloat(document.getElementById(`espesorSeparador-${id}`).value || 0);
-  const cantidad = parseInt(document.getElementById(`cantidad-${id}`).value || 1);
-  const vidrioA = document.getElementById(`vidrioA-${id}`).value;
-  const vidrioB = document.getElementById(`vidrioB-${id}`).value;
-  const tipo = document.getElementById(`tipo-${id}`).value;
-  const separador = document.getElementById(`separador-${id}`).value;
-  const colorSeparador = document.getElementById(`colorSeparador-${id}`).value;
-  const terminacion = document.getElementById(`terminacion-${id}`).value;
-  const perforacion = document.getElementById(`perforacion-${id}`).value;
-  const cantPerforacion = parseInt(document.getElementById(`cantPerforacion-${id}`).value || 0);
-  const destajado = document.getElementById(`destajado-${id}`).value;
-  const cantDestajado = parseInt(document.getElementById(`cantDestajado-${id}`).value || 0);
-  const entrega = document.getElementById(`entrega-${id}`).value || "No especificado";
-  const factor = 1;
+  try {
+    const alto_mm = parseFloat(document.getElementById(`alto-${id}`).value) || 0;
+    const ancho_mm = parseFloat(document.getElementById(`ancho-${id}`).value) || 0;
+    const cantidad = parseInt(document.getElementById(`cantidad-${id}`).value) || 1;
+    const espesorA = parseFloat(document.getElementById(`espesorA-${id}`).value) || 0;
+    const espesorB = parseFloat(document.getElementById(`espesorB-${id}`).value) || 0;
+    const espesorSeparador = parseFloat(document.getElementById(`espesorSeparador-${id}`).value) || 0;
+    const vidrioA = document.getElementById(`vidrioA-${id}`).value;
+    const vidrioB = document.getElementById(`vidrioB-${id}`).value;
+    const tipo = document.getElementById(`tipo-${id}`).value;
+    const separador = document.getElementById(`separador-${id}`).value;
+    const colorSeparador = document.getElementById(`colorSeparador-${id}`).value;
+    const terminacion = document.getElementById(`terminacion-${id}`).value;
+    const perforacion = document.getElementById(`perforacion-${id}`).value;
+    const cantPerforacion = parseInt(document.getElementById(`cantPerforacion-${id}`).value) || 0;
+    const destajado = document.getElementById(`destajado-${id}`).value;
+    const cantDestajado = parseInt(document.getElementById(`cantDestajado-${id}`).value) || 0;
+    const entrega = document.getElementById(`entrega-${id}`).value || "Fábrica";
+    const factor = parseFloat(localStorage.getItem("factor")) || 1;
 
-  const m2 = calcularM2(ancho_mm, alto_mm) * cantidad;
-  const ml = calcularML(ancho_mm, alto_mm) * cantidad;
-  const peso = tipo === "Termopanel" ? calcularPesoVidrio(m2, espesorA + espesorB) : calcularPesoVidrio(m2, espesorA);
+    if (alto_mm < 0 || ancho_mm < 0 || cantidad < 1 || espesorA < 0 || espesorB < 0 || espesorSeparador < 0 || cantPerforacion < 0 || cantDestajado < 0) {
+      throw new Error("Valores inválidos en los campos numéricos");
+    }
 
-  let precio = 0;
-  let aPedido = false;
+    if (!preciosBase || !preciosBase.vidrios) {
+      throw new Error("No se encontraron datos de precios");
+    }
 
-  if (vidrioA && espesorA && preciosBase.vidrios) {
-    const vidrioAData = preciosBase.vidrios.find(v => v.nombre === vidrioA && v.espesor === espesorA);
-    if (vidrioAData && vidrioAData.precio_m2 && vidrioAData.precio_m2 !== "A PEDIDO") {
-      precio += parseFloat(vidrioAData.precio_m2) * m2 * factor;
+    const m2 = calcularM2(ancho_mm, alto_mm) * cantidad;
+    const ml = calcularML(ancho_mm, alto_mm) * cantidad;
+    const peso = tipo === "Termopanel" ? calcularPesoVidrio(m2, espesorA + espesorB) : calcularPesoVidrio(m2, espesorA);
+
+    let precio = 0;
+    let aPedido = false;
+
+    if (vidrioA && espesorA) {
+      const vidrioAData = preciosBase.vidrios.find(v => v.nombre === vidrioA && v.espesor === espesorA);
+      if (vidrioAData && vidrioAData.precio_m2 && vidrioAData.precio_m2 !== "A PEDIDO") {
+        precio += parseFloat(vidrioAData.precio_m2) * m2 * factor;
+      } else {
+        aPedido = true;
+      }
     } else {
       aPedido = true;
     }
-  } else {
-    aPedido = true;
-  }
 
-  if (tipo === "Termopanel" && vidrioB && espesorB && preciosBase.vidrios) {
-    const vidrioBData = preciosBase.vidrios.find(v => v.nombre === vidrioB && v.espesor === espesorB);
-    if (vidrioBData && vidrioBData.precio_m2 && vidrioBData.precio_m2 !== "A PEDIDO") {
-      precio += parseFloat(vidrioBData.precio_m2) * m2 * factor;
-    } else {
-      aPedido = true;
+    if (tipo === "Termopanel" && vidrioB && espesorB) {
+      const vidrioBData = preciosBase.vidrios.find(v => v.nombre === vidrioB && v.espesor === espesorB);
+      if (vidrioBData && vidrioBData.precio_m2 && vidrioBData.precio_m2 !== "A PEDIDO") {
+        precio += parseFloat(vidrioBData.precio_m2) * m2 * factor;
+      } else {
+        aPedido = true;
+      }
+      if (separador && espesorSeparador && preciosBase.separadores) {
+        const separadorData = preciosBase.separadores.find(s => s.nombre === separador && s.espesor === espesorSeparador);
+        if (separadorData && separadorData.precio_ml && separadorData.precio_ml !== "n/d") {
+          precio += parseFloat(separadorData.precio_ml) * ml * factor;
+        } else {
+          aPedido = true;
+        }
+      }
     }
-    if (separador && espesorSeparador && preciosBase.separadores) {
-      const separadorData = preciosBase.separadores.find(s => s.nombre === separador && s.espesor === espesorSeparador);
-      if (separadorData && separadorData.precio_ml && separadorData.precio_ml !== "n/d") {
-        precio += parseFloat(separadorData.precio_ml) * ml * factor;
+
+    if (terminacion && preciosBase.terminaciones && terminacion !== "Crudo") {
+      const terminacionData = preciosBase.terminaciones.find(t => t.nombre === terminacion && t.espesor === espesorA);
+      if (terminacionData && terminacionData.precio_ml && terminacionData.precio_ml !== "n/d") {
+        precio += parseFloat(terminacionData.precio_ml) * ml * factor;
       } else {
         aPedido = true;
       }
     }
-  }
 
-  if (terminacion && preciosBase.terminaciones && terminacion !== "Crudo") {
-    const terminacionData = preciosBase.terminaciones.find(t => t.nombre === terminacion && t.espesor === espesorA);
-    if (terminacionData && terminacionData.precio_ml && terminacionData.precio_ml !== "n/d") {
-      precio += parseFloat(terminacionData.precio_ml) * ml * factor;
-    } else {
-      aPedido = true;
+    if (perforacion && cantPerforacion > 0 && preciosBase.perforaciones) {
+      const perforacionData = preciosBase.perforaciones.find(p => p.nombre === perforacion && p.espesor === espesorA);
+      if (perforacionData && perforacionData.precio && perforacionData.precio !== "n/d") {
+        precio += parseFloat(perforacionData.precio) * cantPerforacion * factor;
+      } else {
+        aPedido = true;
+      }
     }
-  }
 
-  if (perforacion && cantPerforacion > 0 && preciosBase.perforaciones) {
-    const perforacionData = preciosBase.perforaciones.find(p => p.nombre === perforacion && p.espesor === espesorA);
-    if (perforacionData && perforacionData.precio && perforacionData.precio !== "n/d") {
-      precio += parseFloat(perforacionData.precio) * cantPerforacion * factor;
-    } else {
-      aPedido = true;
+    if (destajado && cantDestajado > 0 && preciosBase.destajados) {
+      const destajadoData = preciosBase.destajados.find(d => d.nombre === destajado && d.espesor === espesorA);
+      if (destajadoData && destajadoData.precio && destajadoData.precio !== "n/d") {
+        precio += parseFloat(destajadoData.precio) * cantDestajado * factor;
+      } else {
+        aPedido = true;
+      }
     }
+
+    document.getElementById(`m2-${id}`).innerText = m2.toFixed(3);
+    document.getElementById(`ml-${id}`).innerText = ml.toFixed(3);
+    document.getElementById(`peso-${id}`).innerText = peso.toFixed(1);
+    document.getElementById(`precio-${id}`).innerText = aPedido ? "A PEDIDO" : `$${Math.round(precio).toLocaleString()}`;
+    document.getElementById(`precio-${id}`).style.color = aPedido ? "red" : "inherit";
+    document.getElementById(`entrega-${id}`).value = entrega;
+
+    productosCotizados[id] = {
+      id: id + 1,
+      nombre: document.getElementById(`nombre-${id}`).value,
+      cantidad,
+      tipo,
+      vidrioA,
+      espesorA,
+      vidrioB,
+      espesorB,
+      separador,
+      espesorSeparador,
+      colorSeparador,
+      terminacion,
+      perforacion,
+      cantPerforacion,
+      destajado,
+      cantDestajado,
+      m2,
+      ml,
+      peso,
+      precio: aPedido ? "A PEDIDO" : precio,
+      alto_mm,
+      ancho_mm,
+      entrega
+    };
+
+    actualizarResumen();
+  } catch (error) {
+    console.error(`Error en calcularLinea(${id}):`, error);
+    document.getElementById(`precio-${id}`).innerText = "Error";
+    document.getElementById(`precio-${id}`).style.color = "red";
   }
-
-  if (destajado && cantDestajado > 0 && preciosBase.destajados) {
-    const destajadoData = preciosBase.destajados.find(d => d.nombre === destajado && d.espesor === espesorA);
-    if (destajadoData && destajadoData.precio && destajadoData.precio !== "n/d") {
-      precio += parseFloat(destajadoData.precio) * cantDestajado * factor;
-    } else {
-      aPedido = true;
-    }
-  }
-
-  document.getElementById(`m2-${id}`).innerText = m2.toFixed(3);
-  document.getElementById(`ml-${id}`).innerText = ml.toFixed(3);
-  document.getElementById(`peso-${id}`).innerText = peso.toFixed(1);
-  document.getElementById(`precio-${id}`).innerText = aPedido ? "A PEDIDO" : `$${Math.round(precio).toLocaleString()}`;
-  document.getElementById(`precio-${id}`).style.color = aPedido ? "red" : "inherit";
-  document.getElementById(`entrega-${id}`).value = entrega;
-
-  productosCotizados[id] = {
-    id: id + 1,
-    nombre: document.getElementById(`nombre-${id}`).value,
-    cantidad,
-    tipo,
-    vidrioA,
-    espesorA,
-    vidrioB,
-    espesorB,
-    separador,
-    espesorSeparador,
-    colorSeparador,
-    terminacion,
-    perforacion,
-    cantPerforacion,
-    destajado,
-    cantDestajado,
-    m2,
-    ml,
-    peso,
-    precio: aPedido ? "A PEDIDO" : precio,
-    alto_mm,
-    ancho_mm,
-    entrega
-  };
-
-  actualizarResumen();
 }
 
 function actualizarResumen() {
-  const resumen = document.getElementById("resumenCotizacion");
-  const precios = Array.from(document.querySelectorAll('[id^="precio-"]')).map(e => {
-    const txt = e.innerText;
-    return txt === "A PEDIDO" ? 0 : parseInt(txt.replace(/[^0-9]/g, '')) || 0;
-  });
-  const aPedido = productosCotizados.some(p => p && p.precio === "A PEDIDO");
-  const totalNeto = precios.reduce((a, b) => a + b, 0);
-  const iva = aPedido ? 0 : totalNeto * 0.19;
-  const total = aPedido ? 0 : totalNeto + iva;
+  try {
+    const resumen = document.getElementById("resumenCotizacion");
+    const precios = Array.from(document.querySelectorAll('[id^="precio-"]')).map(e => {
+      const txt = e.innerText;
+      return txt === "A PEDIDO" || txt === "Error" ? 0 : parseInt(txt.replace(/[^0-9]/g, '')) || 0;
+    });
+    const aPedido = productosCotizados.some(p => p && p.precio === "A PEDIDO");
+    let totalNeto = precios.reduce((a, b) => a + b, 0);
 
-  resumen.innerHTML = `
-    <p>Total Neto: ${aPedido ? "A PEDIDO" : `$${totalNeto.toLocaleString()}`}</p>
-    <p>IVA (19%): ${aPedido ? "A PEDIDO" : `$${iva.toLocaleString()}`}</p>
-    <p>Total Final: ${aPedido ? "A PEDIDO" : `$${total.toLocaleString()}`}</p>
-  `;
-  if (aPedido) {
-    resumen.style.color = "red";
-  } else {
-    resumen.style.color = "inherit";
+    const instalacion = document.getElementById("servicioInstalacion").checked;
+    const transporte = document.getElementById("servicioTransporte").checked;
+    if (instalacion && preciosBase.servicios?.instalacion?.precio) {
+      totalNeto += parseFloat(preciosBase.servicios.instalacion.precio);
+    }
+    if (transporte && preciosBase.servicios?.transporte?.precio) {
+      totalNeto += parseFloat(preciosBase.servicios.transporte.precio);
+    }
+
+    const iva = aPedido ? 0 : totalNeto * 0.19;
+    const total = aPedido ? 0 : totalNeto + iva;
+
+    resumen.innerHTML = `
+      <p>Total Neto: ${aPedido ? "A PEDIDO" : `$${totalNeto.toLocaleString()}`}</p>
+      <p>IVA (19%): ${aPedido ? "A PEDIDO" : `$${iva.toLocaleString()}`}</p>
+      <p>Total Final: ${aPedido ? "A PEDIDO" : `$${total.toLocaleString()}`}</p>
+    `;
+    resumen.style.color = aPedido ? "red" : "inherit";
+  } catch (error) {
+    console.error("Error en actualizarResumen:", error);
+    document.getElementById("resumenCotizacion").innerHTML = "<p>Error al calcular el resumen</p>";
+    document.getElementById("resumenCotizacion").style.color = "red";
   }
 }
 
@@ -412,9 +424,20 @@ function borrarSeleccion() {
   actualizarResumen();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  cargarPrecios();
-  document.getElementById("agregarProducto").addEventListener("click", agregarProducto);
-  document.getElementById("agregarSimilar").addEventListener("click", agregarSimilar);
-  document.getElementById("borrarSeleccion").addEventListener("click", borrarSeleccion);
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    preciosBase = await cargarPrecios();
+    if (!preciosBase || Object.keys(preciosBase).length === 0) {
+      alert("Error: No se pudieron cargar los precios. Contacta al administrador.");
+      return;
+    }
+    document.getElementById("agregarProducto").addEventListener("click", agregarProducto);
+    document.getElementById("agregarSimilar").addEventListener("click", agregarSimilar);
+    document.getElementById("borrarSeleccion").addEventListener("click", borrarSeleccion);
+    document.getElementById("guardarCotizacion").addEventListener("click", guardarCotizacion);
+    document.getElementById("exportarPDF").addEventListener("click", exportarPDF);
+  } catch (error) {
+    console.error("Error al inicializar cotizador:", error);
+    alert("Error al cargar la aplicación. Contacta al administrador.");
+  }
 });

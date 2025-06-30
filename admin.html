@@ -45,17 +45,17 @@
   <title>Acceso Administrador</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="admin.js" defer></script>
-  <script src="userManager.js" defer></script>
+  <script src="admin.js"></script>
+  <script src="userManager.js"></script>
 </head>
 <body>
   <div class="container login-container">
-    <h2>Acceso Administrador</h2>
-    <input type="password" id="adminClave" placeholder="Clave">
+    <h1>Ingresar</h1>
+    <input type="password" id="adminClave" placeholder="Clave Administrador">
     <button onclick="verificarClave()">Ingresar</button>
     <p id="errorClave" style="color: red;"></p>
   </div>
-  <div class="container" id="adminPanel" style="display: none;">
+  <div id="adminPanel" class="container" style="display: none;">
     <h2>Cargar nueva lista de precios</h2>
     <input type="file" id="archivoExcel" accept=".xlsx, .xls">
     <button onclick="cargarExcel()">Procesar y mostrar</button>
@@ -63,20 +63,15 @@
     <h2>Gestión de Usuarios</h2>
     <table id="tablaUsuarios">
       <thead>
-        <tr>
-          <th>Usuario</th>
-          <th>Contraseña</th>
-          <th>Factor</th>
-          <th>Eliminar</th>
-        </tr>
+        <tr><th>Usuario</th><th>Contraseña</th><th>Factor</th><th>Eliminar</th></tr>
       </thead>
       <tbody></tbody>
     </table>
     <h3>Agregar Usuario</h3>
     <form id="formNuevoUsuario">
-      <input type="text" name="nuevoUsuario" id="nuevoUsuario" placeholder="Usuario">
-      <input type="password" name="nuevaClave" id="nuevaClave" placeholder="Contraseña">
-      <input type="number" name="nuevoFactor" id="nuevoFactor" placeholder="Factor" step="0.01">
+      <input type="text" name="nuevoUsuario" placeholder="Usuario" required>
+      <input type="password" name="nuevaClave" placeholder="Contraseña" required>
+      <input type="number" name="nuevoFactor" placeholder="Factor (e.g., 1.15)" step="0.01" required>
       <button type="submit">Agregar</button>
       <p id="estadoNuevoUsuario"></p>
     </form>
