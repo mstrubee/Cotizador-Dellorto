@@ -56,14 +56,16 @@
     <p id="errorClave" style="color: red;"></p>
   </div>
   <div id="adminPanel" class="container" style="display: none;">
-    <h2>Cargar nueva lista de precios</h2>
-    <input type="file" id="archivoExcel" accept=".xlsx, .xls">
-    <button onclick="cargarExcel()">Procesar y mostrar</button>
-    <pre id="resultadoCarga"></pre>
     <h2>Gestión de Usuarios</h2>
     <table id="tablaUsuarios">
       <thead>
-        <tr><th>Usuario</th><th>Contraseña</th><th>Factor</th><th>Eliminar</th></tr>
+        <tr>
+          <th>Usuario</th>
+          <th>Contraseña</th>
+          <th>Factor</th>
+          <th>Administrador</th>
+          <th>Acciones</th>
+        </tr>
       </thead>
       <tbody></tbody>
     </table>
@@ -75,6 +77,34 @@
       <button type="submit">Agregar</button>
       <p id="estadoNuevoUsuario"></p>
     </form>
+    <h3>Modificar Usuario</h3>
+    <form id="formModificarUsuario">
+      <select id="usuarioModificar" name="usuarioModificar" required>
+        <option value="">Selecciona un usuario</option>
+      </select>
+      <input type="password" name="nuevaClaveModificar" placeholder="Nueva Contraseña">
+      <input type="number" name="nuevoFactorModificar" placeholder="Nuevo Factor (e.g., 1.15)" step="0.01">
+      <button type="submit">Modificar</button>
+      <p id="estadoModificarUsuario"></p>
+    </form>
+    <h2>Cargar Nueva Lista de Precios</h2>
+    <input type="file" id="archivoExcel" accept=".xlsx, .xls">
+    <button onclick="cargarExcel()">Cargar y Mostrar</button>
+    <button onclick="exportarPreciosExcel()">Exportar Precios a Excel</button>
+    <div id="tablaPreciosContainer" class="table-container">
+      <h3>Precios Cargados</h3>
+      <table id="tablaPrecios">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Nombre</th>
+            <th>Espesor</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 </body>
 </html>

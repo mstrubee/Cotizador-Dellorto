@@ -47,6 +47,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="auth.js"></script>
+  <script>
+    // Redirigir a login.html si no hay usuario autenticado
+    document.addEventListener("DOMContentLoaded", () => {
+      const usuario = localStorage.getItem("usuario");
+      if (!usuario) {
+        window.location.href = "login.html";
+      }
+    });
+  </script>
   <script src="utils.js"></script>
   <script src="dataLoader.js"></script>
   <script src="cotizador.js"></script>
