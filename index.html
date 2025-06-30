@@ -38,39 +38,45 @@
         return gk_fileData[filename] || "";
         }
         </script><!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cotizador</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="cotizador.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <h1>Cotizador de Productos</h1>
-    <table id="tablaProductos">
-      <thead>
-        <tr>
-          <th>Tipo</th>
-          <th>Nombre</th>
-          <th>Espesor</th>
-          <th>Precio</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="listaProductos"></tbody>
-    </table>
-    <button onclick="agregarItem()">+ Añadir Ítem</button>
-  </div>
-  <script>
-    // Redirigir si no está autenticado
-    (function() {
-      const usuario = localStorage.getItem("usuario");
-      if (!usuario) {
-        window.location.replace("login.html");
-      }
-    })();
-  </script>
-</body>
-</html>
+     <html lang="es">
+     <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Cotizador</title>
+       <link rel="stylesheet" href="styles.css">
+       <script src="cotizador.js" defer></script>
+     </head>
+     <body>
+       <div class="container">
+         <h1>Cotizador de Productos</h1>
+         <table id="tablaProductos">
+           <thead>
+             <tr>
+               <th>Tipo</th>
+               <th>Nombre</th>
+               <th>Espesor</th>
+               <th>Precio</th>
+               <th>Acciones</th>
+             </tr>
+           </thead>
+           <tbody id="listaProductos"></tbody>
+         </table>
+         <button onclick="agregarItem()">+ Añadir Ítem</button>
+         <div id="errorMensaje" style="color: red;"></div>
+       </div>
+       <script>
+         // Redirección básica
+         (function() {
+           try {
+             const usuario = localStorage.getItem("usuario");
+             if (!usuario) {
+               window.location.replace("login.html");
+             }
+           } catch (e) {
+             document.getElementById("errorMensaje").innerText = "Error al cargar la aplicación. Contacta al administrador.";
+             console.error("Error en redirección:", e);
+           }
+         })();
+       </script>
+     </body>
+     </html>
