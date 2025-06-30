@@ -47,11 +47,13 @@
   <script>
     // Redirigir a login.html si no hay usuario autenticado
     (function() {
-      console.log("Verificando autenticación...");
+      console.log("Verificando autenticación en index.html...");
       const usuario = localStorage.getItem("usuario");
       if (!usuario) {
         console.log("No hay usuario autenticado, redirigiendo a login.html");
-        window.location.href = "login.html";
+        localStorage.removeItem("usuario"); // Limpia cualquier dato residual
+        localStorage.removeItem("factor");
+        window.location.replace("login.html"); // Usar replace para evitar historial
       } else {
         console.log("Usuario autenticado encontrado:", usuario);
       }

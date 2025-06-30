@@ -1,10 +1,13 @@
 function verificarClave() {
   const clave = document.getElementById("adminClave").value;
+  console.log("Verificando clave de administrador:", clave);
   if (clave === "6658") {
+    console.log("Clave de administrador correcta, mostrando panel");
     document.querySelector(".login-container").style.display = "none";
     document.getElementById("adminPanel").style.display = "block";
   } else {
-    document.getElementById("errorClave").innerText = "Clave incorrecta";
+    console.log("Clave de administrador incorrecta");
+    document.getElementById("errorClave").innerText = "Clave de administrador incorrecta";
   }
 }
 
@@ -107,7 +110,6 @@ function mostrarPreciosEnTabla(precios) {
     });
   });
 
-  // Agregar eventos para guardar cambios en precios
   document.querySelectorAll(".precio-editable").forEach(cell => {
     cell.addEventListener("blur", guardarPreciosModificados);
   });
@@ -171,4 +173,4 @@ function exportarPreciosExcel() {
 
 window.verificarClave = verificarClave;
 window.cargarExcel = cargarExcel;
-window.exportarPreciosExcel = exportarPre iciosExcel;
+window.exportarPreciosExcel = exportarPreciosExcel;

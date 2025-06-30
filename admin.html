@@ -44,13 +44,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Acceso Administrador</title>
   <link rel="stylesheet" href="styles.css">
+  <script>
+    // Redirigir a login.html si no hay usuario autenticado
+    (function() {
+      console.log("Verificando autenticación en admin.html...");
+      const usuario = localStorage.getItem("usuario");
+      if (!usuario || usuario !== "LTAM") {
+        console.log("No hay usuario administrador autenticado, redirigiendo a login.html");
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("factor");
+        window.location.replace("login.html");
+      } else {
+        console.log("Usuario administrador autenticado:", usuario);
+      }
+    })();
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="admin.js"></script>
   <script src="userManager.js"></script>
 </head>
 <body>
   <div class="container login-container">
-    <h1>Ingresar</h1>
+    <h1>Ingresar al Panel de Administración</h1>
     <input type="password" id="adminClave" placeholder="Clave Administrador">
     <button onclick="verificarClave()">Ingresar</button>
     <p id="errorClave" style="color: red;"></p>
